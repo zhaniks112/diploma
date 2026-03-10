@@ -1,0 +1,136 @@
+{% extends 'issues/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-body">
+
+            <h2 class="card-title">{{ problem.title }}</h2>
+
+            <p class="text-muted">
+                Категория: {{ problem.category }} |
+                Статус: <strong>{{ problem.status }}</strong> |
+                Автор: {{ problem.author.username }}
+            </p>
+
+            <hr>
+
+            <p class="card-text">
+                {{ problem.description }}
+            </p>
+
+            {% if problem.image %}
+                <hr>
+                <img src="{{ problem.image.url }}"
+                     class="img-fluid rounded"
+                     style="max-height: 400px;"
+                     alt="Изображение проблемы">
+            {% endif %}
+
+            <!-- Форма изменения статуса (только для staff) -->
+            {% if user.is_staff %}
+                <hr>
+                <form method="post" action="{% url 'issues:change_problem_status' problem.id %}">
+                    {% csrf_token %}
+                    <label class="form-label">Изменить статус:</label>
+                    <select name="status" class="form-select w-25">
+                        <option value="new"        {% if problem.status == 'new'        %}selected{% endif %}>new</option>
+                        <option value="in_progress"{% if problem.status == 'in_progress' %}selected{% endif %}>in_progress</option>
+                        <option value="resolved"   {% if problem.status == 'resolved'   %}selected{% endif %}>resolved</option>
+                        <option value="closed"     {% if problem.status == 'closed'     %}selected{% endif %}>closed</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-2">
+                        Сохранить
+                    </button>
+                </form>
+            {% endif %}
+
+            <!-- История статусов -->
+            <hr>
+            <h5>История статусов</h5>
+
+            <ul class="list-group">
+                {% for history in problem.status_history.all %}
+                    <li class="list-group-item">
+                        {{ history.changed_at|date:"d.m.Y H:i" }} —
+                        {{ history.old_status }} → {{ history.new_status }}
+                        (
+                        {% if history.changed_by %}
+                            {{ history.changed_by.username }}
+                        {% else %}
+                            Неизвестно
+                        {% endif %}
+                        )
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">
+                        История пока отсутствует
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <!-- Оценка качества решения -->
+            <hr>
+            <h5>Оцените качество решения</h5>
+
+            {% if can_rate %}
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Ваша оценка (1–5)</label>
+                        <select name="rating" class="form-select w-25" required>
+                            <option value="">Выберите оценку</option>
+                            <option value="1">1 ★</option>
+                            <option value="2">2 ★★</option>
+                            <option value="3">3 ★★★</option>
+                            <option value="4">4 ★★★★</option>
+                            <option value="5">5 ★★★★★</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Отзыв (опционально)</label>
+                        <textarea name="review_text" class="form-control" rows="3" placeholder="Ваш комментарий..."></textarea>
+                    </div>
+
+                    <button type="submit" name="rating_submit" class="btn btn-success mt-3">
+                        Отправить оценку
+                    </button>
+                </form>
+            {% elif problem.rating %}
+                <p class="mt-3">
+                    <strong>Ваша оценка:</strong> {{ problem.rating }} / 5 ★
+                    {% if problem.review_text %}
+                        <br><strong>Отзыв:</strong> {{ problem.review_text }}
+                    {% endif %}
+                    {% if problem.rated_at %}
+                        <br><small>Оценено: {{ problem.rated_at|date:"d.m.Y H:i" }}</small>
+                    {% endif %}
+                </p>
+            {% else %}
+                <p class="text-muted">Оценку может поставить только автор заявки после решения.</p>
+            {% endif %}
+
+            <!-- Кнопка удаления (только для superuser, если статус closed) -->
+            {% if user.is_superuser and problem.status == 'closed' %}
+                <hr>
+                <form method="post" action="{% url 'issues:delete_problem' problem.id %}"
+                      onsubmit="return confirm('Вы уверены, что хотите удалить проблему?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger mt-3">
+                        Удалить проблему
+                    </button>
+                </form>
+            {% endif %}
+
+            <!-- Кнопка назад -->
+            <hr>
+            <a href="{% url 'issues:problem_list' %}" class="btn btn-secondary mt-3">
+                ← Назад к списку
+            </a>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

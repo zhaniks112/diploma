@@ -1,0 +1,45 @@
+{% extends 'issues/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Создать заявку</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Название</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Описание</label>
+            <textarea class="form-control" id="description" name="description" required rows="5"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Категория проблемы</label>
+            {{ form.category }}
+            {% if form.category.errors %}
+                <div class="text-danger">{{ form.category.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Изображение (опционально)</label>
+            <input type="file" class="form-control" id="image" name="image">
+        </div>
+
+        <!-- Блок с кнопками — теперь они рядом -->
+        <div class="d-flex gap-3 mt-4">
+            <button type="submit" class="btn btn-primary">
+                Создать
+            </button>
+            <button type="button" class="btn btn-outline-danger"
+                    onclick="if(confirm('Изменения будут потеряны. Вернуться к списку?')) history.back();">
+                Назад к списку
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
