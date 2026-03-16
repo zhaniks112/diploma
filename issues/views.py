@@ -142,10 +142,14 @@ def problem_detail(request, pk):
     # Обновляем объект для шаблона
     problem.refresh_from_db()
 
+    staff_list = User.objects.filter(is_staff=True).order_by('username')
+
     context = {
         'problem': problem,
         'can_rate': can_rate,
+        'staff_list': staff_list,
     }
+
 
     return render(request, 'issues/problem_detail.html', context)
 
@@ -195,6 +199,14 @@ def problem_create(request):
             problem.author = request.user
             problem.save()
             send_new_problem_email(problem)
+
+            if problem.assigned_to:
+                Notification.objects.create(
+                    user=problem.assigned_to,
+                    message=f"Вам назначена новая заявка: {problem.title}",
+                    problem=problem
+                )
+
             messages.success(request, "Заявка создана!")
             return redirect('issues:problem_list')
     else:
@@ -302,3 +314,27 @@ def statistics(request):
     }
 
     return render(request, 'issues/statistics.html', context)
+
+@staff_member_required
+def assign_staff(request, pk):
+    problem = get_object_or_404(Problem, pk=pk)
+    if request.method == 'POST':
+        assigned_to_id = request.POST.get('assigned_to')
+        if assigned_to_id:
+            assigned_to = User.objects.get(id=assigned_to_id)
+            problem.assigned_to = assigned_to
+            problem.assigned_at = timezone.now()
+            problem.save()
+            # Уведомляем нового ответственного
+            Notification.objects.create(
+                user=assigned_to,
+                message=f"Вам назначена заявка: {problem.title}",
+                problem=problem
+            )
+            messages.success(request, "Ответственный назначен!")
+        else:
+            problem.assigned_to = None
+            problem.assigned_at = None
+            problem.save()
+            messages.success(request, "Ответственный снят")
+    return redirect('issues:problem_detail', pk=pk)

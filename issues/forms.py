@@ -7,12 +7,15 @@ from .models import Problem, Category
 class ProblemForm(forms.ModelForm):
     class Meta:
         model = Problem
-        fields = ['title', 'description', 'category', 'image']  # добавили category
+        fields = ['title', 'description', 'category', 'image', 'assigned_to']  # добавили category
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['category'].queryset = Category.objects.all().order_by('order', 'name')
         self.fields['category'].empty_label = "Выберите категорию..."  # placeholder
+        self.fields['assigned_to'].queryset = User.objects.filter(is_staff=True)
+        self.fields['assigned_to'].required = False  # можно оставить пустым
+        self.fields['assigned_to'].label = "Назначить ответственного (опционально)"
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)

@@ -130,6 +130,24 @@
                 ← Назад к списку
             </a>
 
+            {% if user.is_staff %}
+            <hr>
+            <h5>Назначить/изменить ответственного</h5>
+            <form method="post" action="{% url 'issues:assign_staff' problem.pk %}">
+                {% csrf_token %}
+                <select name="assigned_to" class="form-select w-50">
+            <option value="">Не назначено</option>
+            {% for staff in staff_list %}
+                <option value="{{ staff.id }}" {% if problem.assigned_to == staff %}selected{% endif %}>
+                    {{ staff.username }}
+                </option>
+            {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary mt-2">Сохранить</button>
+            </form>
+
+{% endif %}
+
         </div>
     </div>
 </div>

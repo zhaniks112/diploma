@@ -85,6 +85,24 @@ class Problem(models.Model):
         help_text="Сотрудник, который перевёл заявку в resolved/closed"
     )
 
+    last_updated_at = models.DateTimeField(
+        auto_now=True,  # обновляется автоматически при любом save()
+        verbose_name="Последнее обновление"
+    )
+
+    assigned_to = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='assigned_problems',
+        verbose_name="Ответственный сотрудник",
+        help_text="Сотрудник, назначенный на выполнение заявки"
+    )
+
+    # Опционально: дата назначения
+    assigned_at = models.DateTimeField(null=True, blank=True)
+
 class StatusHistory(models.Model):
     problem = models.ForeignKey(Problem, related_name='status_history', on_delete=models.CASCADE)
     old_status = models.CharField(max_length=20, choices=Problem.STATUS_CHOICES)
