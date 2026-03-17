@@ -144,11 +144,13 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'   # или console для тестов
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'zhansultanken@gmail.com'  # твой Gmail
+EMAIL_HOST_PASSWORD = 'qdma vxvq fwih ebfd'  # не обычный пароль, а App Password!
+DEFAULT_FROM_EMAIL = 'zhansultanken@gmail.com'
 
-# Для теста используй console (письма будут в терминале)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-DEFAULT_FROM_EMAIL = 'no-reply@university-issues.kz'
 BASE_URL = 'http://127.0.0.1:8000'  # или твой домен
 
 # Для реальной отправки (пример Gmail — только для теста, не используй в проде!)
