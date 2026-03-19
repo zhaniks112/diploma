@@ -153,10 +153,3 @@ DEFAULT_FROM_EMAIL = 'zhansultanken@gmail.com'
 
 BASE_URL = 'http://127.0.0.1:8000'  # или твой домен
 
-# Для реальной отправки (пример Gmail — только для теста, не используй в проде!)
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'твой@gmail.com'
-# EMAIL_HOST_PASSWORD = 'app_password_или_пароль'  # для Gmail нужен App Password
-# DEFAULT_FROM_EMAIL = 'твой@gmail.com'

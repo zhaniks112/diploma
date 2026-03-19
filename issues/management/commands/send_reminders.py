@@ -51,7 +51,7 @@ class Command(BaseCommand):
                     f"  Статус: {p.status}\n"
                     f"  Автор: {p.author.username}\n"
                     f"  Последнее обновление: {p.last_updated_at.strftime('%d.%m.%Y %H:%M')}\n"
-                    f"  Ссылка: {settings.BASE_URL.rstrip('/')}/problems/{p.pk}/\n\n"
+                    f"  Ссылка: {settings.BASE_URL.rstrip('/')}/{p.pk}/\n\n"
                 )
 
             message_lines.append("Пожалуйста, проверьте и обновите статусы.\nС уважением,\nСервис Университетские проблемы")
@@ -82,7 +82,7 @@ class Command(BaseCommand):
                         f"  Статус: {p.status}\n"
                         f"  Автор: {p.author.username}\n"
                         f"  Последнее обновление: {p.last_updated_at.strftime('%d.%m.%Y %H:%M')}\n"
-                        f"  Ссылка: {settings.BASE_URL.rstrip('/')}/problems/{p.pk}/\n\n"
+                        f"  Ссылка: {settings.BASE_URL.rstrip('/')}/{p.pk}/\n\n"
                     )
 
                 message_lines.append("Пожалуйста, назначьте ответственных и обновите статусы.\nС уважением,\nСервис Университетские проблемы")

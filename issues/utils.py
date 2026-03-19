@@ -12,7 +12,7 @@ def send_status_change_email(problem, new_status):
     message = (
         f"Здравствуйте, {problem.author.username}!\n\n"
         f"Ваша заявка «{problem.title}» изменила статус на «{new_status}».\n"
-        f"Перейти к заявке: {settings.BASE_URL}/problems/{problem.pk}/\n\n"
+        f"Перейти к заявке: {settings.BASE_URL}/{problem.pk}/\n\n"
         f"С уважением,\nСервис Университетские проблемы"
     )
 
@@ -40,7 +40,7 @@ def send_new_problem_email(problem):
         f"Категория: {problem.category}\n"
         f"Заголовок: {problem.title}\n"
         f"Описание: {problem.description[:200]}...\n\n"
-        f"Ссылка: {settings.BASE_URL}/problems/{problem.pk}/"
+        f"Ссылка: {settings.BASE_URL}/{problem.pk}/"
     )
 
     send_mail(
