@@ -130,8 +130,7 @@
                 ← Назад к списку
             </a>
 
-            {% if user.is_staff %}
-            <hr>
+            {% if user.is_superuser %}
             <h5>Назначить/изменить ответственного</h5>
             <form method="post" action="{% url 'issues:assign_staff' problem.pk %}">
                 {% csrf_token %}
@@ -143,10 +142,24 @@
                 </option>
             {% endfor %}
                 </select>
+                <hr>
                 <button type="submit" class="btn btn-primary mt-2">Сохранить</button>
             </form>
+            {% endif %}
 
+            <!-- Кнопка "Взять в работу" для сотрудников -->
+{% if user.is_staff and not problem.assigned_to %}
+    <div class="mt-4">
+        <form method="post" action="{% url 'issues:take_task' problem.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-warning btn-lg">
+                Взять заявку в работу
+            </button>
+        </form>
+        <small class="text-muted">После взятия заявки вы станете ответственным</small>
+    </div>
 {% endif %}
+
 
         </div>
     </div>

@@ -15,6 +15,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('statistics/', views.statistics, name='statistics'),
     path('problems/<int:pk>/assign/', views.assign_staff, name='assign_staff'),
+    path('problems/<int:pk>/take/', views.take_task, name='take_task'),
 
     # path('<int:pk>/edit/', views.problem_update, name='problem_update'),
 ]

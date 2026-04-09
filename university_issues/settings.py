@@ -153,3 +153,33 @@ DEFAULT_FROM_EMAIL = 'zhansultanken@gmail.com'
 
 BASE_URL = 'http://127.0.0.1:8000'  # или твой домен
 
+# ... вверху файла ...
+
+# Добавь список поддерживаемых языков
+LANGUAGES = [
+    ('ru', 'Русский'),
+    ('kk', 'Қазақша'),
+    ('en', 'English'),
+]
+
+# Путь к папке с переводами
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
+# Включи мидлвары для локализации
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Добавь эти две строки:
+    #'django.middleware.locale.LocaleMiddleware',  # # ← важно!
+]
+
+USE_I18N = True
+USE_L10N = True
+

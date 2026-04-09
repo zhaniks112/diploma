@@ -11,8 +11,10 @@ class ProblemForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['category'].required = True
         self.fields['category'].queryset = Category.objects.all().order_by('order', 'name')
-        self.fields['category'].empty_label = "Выберите категорию..."  # placeholder
+        self.fields['category'].empty_label = "Выберите категорию..."
+        self.fields['category'].label = "Категория проблемы (обязательно)"
         self.fields['assigned_to'].queryset = User.objects.filter(is_staff=True)
         self.fields['assigned_to'].required = False  # можно оставить пустым
         self.fields['assigned_to'].label = "Назначить ответственного (опционально)"

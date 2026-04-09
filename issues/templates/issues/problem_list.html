@@ -4,6 +4,13 @@
 <div class="container mt-5">
     <h2 class="mb-4">Все заявки</h2>
 
+    {% if user.is_staff %}
+    <div class="alert alert-info mb-4">
+        Вы видите только заявки, за которые вы назначены ответственным,
+        а также все завершённые заявки.
+    </div>
+{% endif %}
+
     <!-- Форма фильтров и поиска -->
     <form method="get" class="mb-4">
         <div class="row g-3">

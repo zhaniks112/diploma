@@ -5,7 +5,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils import timezone
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Avg, Count, Q, ExpressionWrapper, FloatField, F, When, Value, Case
+from django.db.models import Avg, Count, ExpressionWrapper, FloatField, F, When, Value, Case
+from django.db.models import Q
+import django.db.models as models
 from django.contrib.auth.models import User
 from .models import Problem, StatusHistory, Category, Notification
 from django.contrib.auth.decorators import login_required
@@ -24,6 +26,17 @@ from .utils import send_new_problem_email, send_status_change_email
 @login_required
 def problem_list(request):
     problems = Problem.objects.all()
+
+    if request.user.is_staff:
+        # Сотрудник видит только свои назначенные заявки + все завершённые
+        problems = problems.filter(
+            models.Q(assigned_to=request.user) |
+            models.Q(status__in=['resolved', 'closed']) |
+            models.Q(status='new')
+        )
+    else:
+        # Студент видит только свои заявки
+        problems = problems.filter(author=request.user)
 
     # Фильтры из GET-параметров
     category_id = request.GET.get('category')
@@ -337,4 +350,29 @@ def assign_staff(request, pk):
             problem.assigned_at = None
             problem.save()
             messages.success(request, "Ответственный снят")
+    return redirect('issues:problem_detail', pk=pk)
+
+@login_required
+def take_task(request, pk):
+    problem = get_object_or_404(Problem, pk=pk)
+
+    # Проверяем, что заявка ещё не назначена и пользователь — сотрудник
+    if problem.assigned_to:
+        messages.warning(request, "Заявка уже назначена другому сотруднику.")
+    elif not request.user.is_staff:
+        messages.error(request, "Только сотрудники могут брать заявки в работу.")
+    else:
+        problem.assigned_to = request.user
+        problem.assigned_at = timezone.now()
+        problem.save()
+
+        # Создаём уведомление (опционально)
+        Notification.objects.create(
+            user=request.user,
+            message=f"Вы взяли в работу заявку: {problem.title}",
+            problem=problem
+        )
+
+        messages.success(request, f"Вы успешно взяли заявку «{problem.title}» в работу!")
+
     return redirect('issues:problem_detail', pk=pk)

@@ -54,9 +54,9 @@ class Problem(models.Model):
     description = models.TextField()
     category = models.ForeignKey(
         Category,
-        on_delete=models.SET_NULL,  # или PROTECT, если не хочешь удалять проблемы при удалении категории
-        null=True,
-        blank=True,
+        on_delete=models.PROTECT,  # или PROTECT, если не хочешь удалять проблемы при удалении категории
+        null=False,
+        blank=False,
         verbose_name="Категория",
         related_name="problems"
     )

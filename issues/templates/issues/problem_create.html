@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-4">Создать заявку</h2>
+    <h2 class="mb-4">{% trans "Создать заявку" %}</h2>
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -18,11 +18,11 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Категория проблемы</label>
-            {{ form.category }}
-            {% if form.category.errors %}
-                <div class="text-danger">{{ form.category.errors }}</div>
-            {% endif %}
+    <label class="form-label">Категория проблемы <span class="text-danger">*</span></label>
+    {{ form.category }}
+    {% if form.category.errors %}
+        <div class="text-danger small">{{ form.category.errors }}</div>
+    {% endif %}
         </div>
 
         <div class="mb-3">
