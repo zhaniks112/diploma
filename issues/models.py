@@ -1,17 +1,19 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
+
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True, verbose_name=_("Название"))
     slug = models.SlugField(max_length=120, unique=True, blank=True)
-    description = models.TextField(blank=True)
-    icon = models.CharField(max_length=50, blank=True)          # например: "bi bi-lightbulb" для Bootstrap Icons
-    order = models.PositiveSmallIntegerField(default=0)         # для сортировки в выпадающем списке
+    description = models.TextField(blank=True, verbose_name=_("Описание"))
+    icon = models.CharField(max_length=50, blank=True, verbose_name=_("Иконка"))
+    order = models.PositiveSmallIntegerField(default=0, verbose_name=_("Порядок"))
 
     class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
+        verbose_name = _("Категория")
+        verbose_name_plural = _("Категории")
         ordering = ['order', 'name']
 
     def __str__(self):
@@ -23,71 +25,51 @@ class Category(models.Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+
 class Problem(models.Model):
     STATUS_NEW = 'new'
     STATUS_IN_PROGRESS = 'in_progress'
-    STATUS_DONE = 'done'
-
-    rating = models.PositiveSmallIntegerField(
-        null=True,
-        blank=True,
-        choices=[(i, str(i)) for i in range(1, 6)],
-        verbose_name="Оценка качества решения",
-        help_text="Оцените от 1 до 5, как была решена проблема"
-    )
-    rated_at = models.DateTimeField(null=True, blank=True)
-    rated_by = models.ForeignKey(
-        'auth.User',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='rated_problems'
-    )
+    STATUS_RESOLVED = 'resolved'      # рекомендуется заменить 'done' на 'resolved'
+    STATUS_CLOSED = 'closed'
 
     STATUS_CHOICES = [
-        (STATUS_NEW, 'New'),
-        (STATUS_IN_PROGRESS, 'In Progress'),
-        (STATUS_DONE, 'Done'),
+        (STATUS_NEW, _('Новый')),
+        (STATUS_IN_PROGRESS, _('В работе')),
+        (STATUS_RESOLVED, _('Решено')),
+        (STATUS_CLOSED, _('Закрыто')),
     ]
 
-    title = models.CharField(max_length=200)
-    description = models.TextField()
+    title = models.CharField(max_length=200, verbose_name=_("Название"))
+    description = models.TextField(verbose_name=_("Описание"))
+
     category = models.ForeignKey(
         Category,
-        on_delete=models.PROTECT,  # или PROTECT, если не хочешь удалять проблемы при удалении категории
+        on_delete=models.PROTECT,
         null=False,
         blank=False,
-        verbose_name="Категория",
+        verbose_name=_("Категория"),
         related_name="problems"
     )
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_NEW)
-    image = models.ImageField(upload_to='problem_images/', null=True, blank=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='problems', on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"{self.title} ({self.status})"
-
-    review_text = models.TextField(
-        blank=True,
-        verbose_name="Отзыв",
-        help_text="Ваш комментарий к оценке (необязательно)"
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default=STATUS_NEW,
+        verbose_name=_("Статус")
     )
 
-    resolved_by = models.ForeignKey(
-        'auth.User',
-        on_delete=models.SET_NULL,
+    image = models.ImageField(
+        upload_to='problem_images/',
         null=True,
         blank=True,
-        related_name='resolved_problems',
-        verbose_name="Решил проблему",
-        help_text="Сотрудник, который перевёл заявку в resolved/closed"
+        verbose_name=_("Изображение")
     )
 
-    last_updated_at = models.DateTimeField(
-        auto_now=True,  # обновляется автоматически при любом save()
-        verbose_name="Последнее обновление"
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='problems',
+        on_delete=models.CASCADE,
+        verbose_name=_("Автор")
     )
 
     assigned_to = models.ForeignKey(
@@ -96,12 +78,58 @@ class Problem(models.Model):
         null=True,
         blank=True,
         related_name='assigned_problems',
-        verbose_name="Ответственный сотрудник",
-        help_text="Сотрудник, назначенный на выполнение заявки"
+        verbose_name=_("Ответственный сотрудник"),
+        help_text=_("Сотрудник, назначенный на выполнение заявки")
     )
 
-    # Опционально: дата назначения
-    assigned_at = models.DateTimeField(null=True, blank=True)
+    assigned_at = models.DateTimeField(null=True, blank=True, verbose_name=_("Дата назначения"))
+
+    resolved_by = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='resolved_problems',
+        verbose_name=_("Решил проблему"),
+        help_text=_("Сотрудник, который перевёл заявку в resolved/closed")
+    )
+
+    rating = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        choices=[(i, str(i)) for i in range(1, 6)],
+        verbose_name=_("Оценка качества решения"),
+        help_text=_("Оцените от 1 до 5, как была решена проблема")
+    )
+
+    review_text = models.TextField(
+        blank=True,
+        verbose_name=_("Отзыв"),
+        help_text=_("Ваш комментарий к оценке (необязательно)")
+    )
+
+    rated_at = models.DateTimeField(null=True, blank=True, verbose_name=_("Дата оценки"))
+    rated_by = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='rated_problems',
+        verbose_name=_("Оценил")
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата создания"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Дата обновления"))
+    last_updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Последнее обновление"))
+
+    class Meta:
+        verbose_name = _("Заявка")
+        verbose_name_plural = _("Заявки")
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.title} ({self.get_status_display()})"
+
 
 class StatusHistory(models.Model):
     problem = models.ForeignKey(Problem, related_name='status_history', on_delete=models.CASCADE)
@@ -112,19 +140,34 @@ class StatusHistory(models.Model):
         User,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='statushistory'  # ← вот это важно!
+        related_name='statushistory'
     )
+
+    class Meta:
+        verbose_name = _("История изменения статуса")
+        verbose_name_plural = _("Истории изменения статусов")
+        ordering = ['-changed_at']
+
     def __str__(self):
-        return f"{self.problem.title}: {self.old_status} -> {self.new_status} at {self.changed_at}"
+        return f"{self.problem.title}: {self.old_status} → {self.new_status}"
+
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
-    message = models.TextField()
-    is_read = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    problem = models.ForeignKey('Problem', on_delete=models.SET_NULL, null=True, blank=True, related_name='notifications')
+    message = models.TextField(verbose_name=_("Сообщение"))
+    is_read = models.BooleanField(default=False, verbose_name=_("Прочитано"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата создания"))
+    problem = models.ForeignKey(
+        Problem,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='notifications'
+    )
 
     class Meta:
+        verbose_name = _("Уведомление")
+        verbose_name_plural = _("Уведомления")
         ordering = ['-created_at']
 
     def __str__(self):

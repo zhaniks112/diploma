@@ -1,12 +1,12 @@
 {% extends 'issues/base.html' %}
-
+{% load i18n %}
 {% block content %}
 <div class="container mt-4">
-    <h2>Создать заявку</h2>
+    <h2>{% trans "Создать заявку" %}</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Создать</button>
+        <button type="submit" class="btn btn-primary">{% trans "Создать" %}</button>
     </form>
 </div>
 {% endblock %}

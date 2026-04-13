@@ -1,9 +1,11 @@
+{% extends 'issues/base.html' %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <h2 class="text-center mb-4">Регистрация</h2>
+            <h2 class="text-center mb-4">{% trans "Регистрация" %}</h2>
 
             <!-- Вывод сообщений об успехе/ошибках -->
             {% if messages %}
@@ -18,16 +20,16 @@
             <form method="post">
                 {% csrf_token %}
 
-                <!-- Общие ошибки формы (не привязанные к полю) -->
+                <!-- Общие ошибки формы -->
                 {% if form.non_field_errors %}
                     <div class="alert alert-danger">
                         {{ form.non_field_errors }}
                     </div>
                 {% endif %}
 
-                <!-- Поля по одному с ошибками -->
+                <!-- Поля формы -->
                 <div class="mb-3">
-                    <label class="form-label">Имя пользователя</label>
+                    <label class="form-label">{% trans "Имя пользователя" %}</label>
                     {{ form.username }}
                     {% if form.username.errors %}
                         <div class="text-danger">{{ form.username.errors }}</div>
@@ -35,7 +37,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Email</label>
+                    <label class="form-label">{% trans "Email" %}</label>
                     {{ form.email }}
                     {% if form.email.errors %}
                         <div class="text-danger">{{ form.email.errors }}</div>
@@ -43,7 +45,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Пароль</label>
+                    <label class="form-label">{% trans "Пароль" %}</label>
                     {{ form.password1 }}
                     {% if form.password1.errors %}
                         <div class="text-danger">{{ form.password1.errors }}</div>
@@ -51,18 +53,23 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Подтверждение пароля</label>
+                    <label class="form-label">{% trans "Подтверждение пароля" %}</label>
                     {{ form.password2 }}
                     {% if form.password2.errors %}
                         <div class="text-danger">{{ form.password2.errors }}</div>
                     {% endif %}
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+                <button type="submit" class="btn btn-primary w-100">
+                    {% trans "Зарегистрироваться" %}
+                </button>
             </form>
 
             <div class="text-center mt-3">
-                <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+                <p>
+                    {% trans "Уже есть аккаунт?" %}
+                    <a href="{% url 'login' %}">{% trans "Войти" %}</a>
+                </p>
             </div>
         </div>
     </div>

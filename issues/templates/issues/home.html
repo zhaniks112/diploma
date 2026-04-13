@@ -1,46 +1,50 @@
 {% extends 'issues/base.html' %}
-
+{% load i18n %}
 {% block content %}
 <div class="container mt-5 text-center">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <h1 class="display-4 mb-4">Добро пожаловать в наш сервис по решению университетских проблем!</h1>
+            <h1 class="display-4 mb-4">{% trans "Добро пожаловать в наш сервис по решению университетских проблем!" %}</h1>
 
             {% if user.is_authenticated %}
-                <h3 class="mb-4">Привет, {{ user.username }}!</h3>
+                <h3 class="mb-4">{% blocktrans with username=user.username %} Привет, {{ username }}!
+                    {% endblocktrans %}
+                </h3>
             {% else %}
-                <h3 class="mb-4">Привет, гость!</h3>
+                <h3 class="mb-4">{% trans "Привет, гость!" %}</h3>
             {% endif %}
 
             <p class="lead mb-5">
+                {% blocktrans %}
                 Это удобный сервис для студентов, преподавателей и сотрудников университета.
                 Здесь вы можете быстро сообщить о любой инфраструктурной проблеме кампуса
                 (неисправный проектор, протекающая крыша, слабый Wi-Fi и многое другое),
                 отслеживать статус решения и участвовать в улучшении нашего университета.
+                {% endblocktrans %}
             </p>
 
             <div class="row g-4 mb-5">
                 <div class="col-md-4">
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">Сообщите о проблеме</h5>
-                            <p class="card-text">Создайте заявку за 30 секунд с фото и описанием.</p>
+                            <h5 class="card-title">{% trans "Сообщите о проблеме" %}</h5>
+                            <p class="card-text">{% trans "Создайте заявку за 30 секунд с фото и описанием." %}</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">Отслеживайте статус</h5>
-                            <p class="card-text">Узнавайте, когда проблема будет решена.</p>
+                            <h5 class="card-title">{% trans "Отслеживайте статус" %}</h5>
+                            <p class="card-text">{% trans "Узнавайте, когда проблема будет решена." %}</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">Участвуйте в решении</h5>
-                            <p class="card-text">Помогайте университету становиться лучше.</p>
+                            <h5 class="card-title">{% trans "Участвуйте в решении" %}</h5>
+                            <p class="card-text">{% trans "Помогайте университету становиться лучше." %}</p>
                         </div>
                     </div>
                 </div>
@@ -48,20 +52,22 @@
 
             {% if not user.is_authenticated %}
                 <div class="mb-5">
-                    <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-3">Войти</a>
-                    <a href="{% url 'issues:register' %}" class="btn btn-outline-primary btn-lg">Зарегистрироваться</a>
+                    <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-3">{% trans "Войти" %}</a>
+                    <a href="{% url 'issues:register' %}" class="btn btn-outline-primary btn-lg">{% trans "Зарегистрироваться" %}</a>
                 </div>
             {% endif %}
 
             <div class="mb-5">
                 <a href="{% url 'issues:problem_list' %}" class="btn btn-outline-primary btn-lg">
-                    Перейти к списку всех заявок →
+                    {% trans "Перейти к списку всех заявок →" %}
                 </a>
             </div>
 
             <p class="text-muted mt-5">
-                Уже решено проблем: <strong>{{ solved_problems }}</strong><br>
-                Всего заявок: <strong>{{ total_problems }}</strong>
+                {% blocktrans with solved=solved_problems total=total_problems %}
+                Уже решено проблем: <strong>{{ solved }}</strong><br>
+                Всего заявок: <strong>{{ total }}</strong>
+                {% endblocktrans %}
             </p>
         </div>
     </div>

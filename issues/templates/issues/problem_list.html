@@ -1,15 +1,15 @@
 {% extends 'issues/base.html' %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-4">Все заявки</h2>
+    <h2 class="mb-4">{% trans "Все заявки" %}</h2>
 
     {% if user.is_staff %}
     <div class="alert alert-info mb-4">
-        Вы видите только заявки, за которые вы назначены ответственным,
-        а также все завершённые заявки.
+        {% trans "Вы видите только заявки, за которые вы назначены ответственным, а также все завершённые заявки." %}
     </div>
-{% endif %}
+    {% endif %}
 
     <!-- Форма фильтров и поиска -->
     <form method="get" class="mb-4">
@@ -17,18 +17,18 @@
             <!-- Поиск -->
             <div class="col-md-4">
                 <input type="text" name="q" class="form-control"
-                       placeholder="Поиск по названию или описанию"
+                       placeholder="{% trans 'Поиск по названию или описанию' %}"
                        value="{{ search_query|default:'' }}">
             </div>
 
             <!-- Категория -->
             <div class="col-md-3">
                 <select name="category" class="form-select">
-                    <option value="">Все категории</option>
+                    <option value="">{% trans "Все категории" %}</option>
                     {% for cat in categories %}
                         <option value="{{ cat.id }}" {% if selected_category == cat.id %}selected{% endif %}>
-    {{ cat.name }}
-</option>
+                            {{ cat.name }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
@@ -36,28 +36,28 @@
             <!-- Статус -->
             <div class="col-md-2">
                 <select name="status" class="form-select">
-                    <option value="">Все статусы</option>
-                    <option value="new"        {% if selected_status == 'new'        %}selected{% endif %}>new</option>
-                    <option value="in_progress"{% if selected_status == 'in_progress' %}selected{% endif %}>in_progress</option>
-                    <option value="resolved"   {% if selected_status == 'resolved'   %}selected{% endif %}>resolved</option>
-                    <option value="closed"     {% if selected_status == 'closed'     %}selected{% endif %}>closed</option>
+                    <option value="">{% trans "Все статусы" %}</option>
+                    <option value="new"        {% if selected_status == 'new'        %}selected{% endif %}>{% trans "new" %}</option>
+                    <option value="in_progress"{% if selected_status == 'in_progress' %}selected{% endif %}>{% trans "in_progress" %}</option>
+                    <option value="resolved"   {% if selected_status == 'resolved'   %}selected{% endif %}>{% trans "resolved" %}</option>
+                    <option value="closed"     {% if selected_status == 'closed'     %}selected{% endif %}>{% trans "closed" %}</option>
                 </select>
             </div>
 
             <!-- Сортировка -->
             <div class="col-md-3">
                 <select name="sort" class="form-select">
-                    <option value="created_at"  {% if selected_sort == 'created_at'  %}selected{% endif %}>Новые сверху</option>
-                    <option value="-created_at" {% if selected_sort == '-created_at' %}selected{% endif %}>Старые сверху</option>
-                    <option value="title"       {% if selected_sort == 'title'       %}selected{% endif %}>По названию (А-Я)</option>
-                    <option value="-title"      {% if selected_sort == '-title'      %}selected{% endif %}>По названию (Я-А)</option>
-                    <option value="rating"      {% if selected_sort == 'rating'      %}selected{% endif %}>По оценке (лучшие сверху)</option>
+                    <option value="created_at"  {% if selected_sort == 'created_at'  %}selected{% endif %}>{% trans "Новые сверху" %}</option>
+                    <option value="-created_at" {% if selected_sort == '-created_at' %}selected{% endif %}>{% trans "Старые сверху" %}</option>
+                    <option value="title"       {% if selected_sort == 'title'       %}selected{% endif %}>{% trans "По названию (А-Я)" %}</option>
+                    <option value="-title"      {% if selected_sort == '-title'      %}selected{% endif %}>{% trans "По названию (Я-А)" %}</option>
+                    <option value="rating"      {% if selected_sort == 'rating'      %}selected{% endif %}>{% trans "По оценке (лучшие сверху)" %}</option>
                 </select>
             </div>
 
             <!-- Кнопка применения -->
             <div class="col-md-auto">
-                <button type="submit" class="btn btn-primary w-100">Применить</button>
+                <button type="submit" class="btn btn-primary w-100">{% trans "Применить" %}</button>
             </div>
         </div>
     </form>
@@ -69,20 +69,22 @@
                 <div class="col">
                     <div class="card h-100 shadow-sm">
                         {% if problem.image %}
-                            <img src="{{ problem.image.url }}" class="card-img-top" alt="{{ problem.title }}" style="height: 180px; object-fit: cover;">
+                            <img src="{{ problem.image.url }}" class="card-img-top"
+                                 alt="{{ problem.title }}"
+                                 style="height: 180px; object-fit: cover;">
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ problem.title }}</h5>
                             <p class="card-text text-muted small">
-                                Категория: {{ problem.category|default:"Не указана" }}<br>
-                                Статус: <strong>{{ problem.status }}</strong><br>
-                                Автор: {{ problem.author.username }}<br>
+                                {% trans "Категория" %}: {{ problem.category|default:"{% trans 'Не указана' %}" }}<br>
+                                {% trans "Статус" %}: <strong>{{ problem.status }}</strong><br>
+                                {% trans "Автор" %}: {{ problem.author.username }}<br>
                                 {% if problem.rating %}
-                                    Оценка: {{ problem.rating }} ★
+                                    {% trans "Оценка" %}: {{ problem.rating }} ★
                                 {% endif %}
                             </p>
                             <a href="{% url 'issues:problem_detail' problem.pk %}" class="btn btn-primary btn-sm">
-                                Подробнее
+                                {% trans "Подробнее" %}
                             </a>
                         </div>
                     </div>
@@ -91,7 +93,7 @@
         </div>
     {% else %}
         <div class="alert alert-info text-center">
-            Заявок по выбранным фильтрам не найдено.
+            {% trans "Заявок по выбранным фильтрам не найдено." %}
         </div>
     {% endif %}
 </div>

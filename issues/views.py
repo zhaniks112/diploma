@@ -21,6 +21,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
 from .utils import send_new_problem_email, send_status_change_email
+from django.utils.translation import gettext_lazy as _
 
 
 @login_required
@@ -163,7 +164,6 @@ def problem_detail(request, pk):
         'staff_list': staff_list,
     }
 
-
     return render(request, 'issues/problem_detail.html', context)
 
 # Смена статуса (только staff)
@@ -216,11 +216,11 @@ def problem_create(request):
             if problem.assigned_to:
                 Notification.objects.create(
                     user=problem.assigned_to,
-                    message=f"Вам назначена новая заявка: {problem.title}",
+                    message=_(f"Вам назначена новая заявка: {problem.title}"),
                     problem=problem
                 )
 
-            messages.success(request, "Заявка создана!")
+            messages.success(request, _("Заявка создана!"))
             return redirect('issues:problem_list')
     else:
         form = ProblemForm()
@@ -341,15 +341,15 @@ def assign_staff(request, pk):
             # Уведомляем нового ответственного
             Notification.objects.create(
                 user=assigned_to,
-                message=f"Вам назначена заявка: {problem.title}",
+                message=_(f"Вам назначена заявка: {problem.title}"),
                 problem=problem
             )
-            messages.success(request, "Ответственный назначен!")
+            messages.success(request, _("Ответственный назначен!"))
         else:
             problem.assigned_to = None
             problem.assigned_at = None
             problem.save()
-            messages.success(request, "Ответственный снят")
+            messages.success(request, _("Ответственный снят"))
     return redirect('issues:problem_detail', pk=pk)
 
 @login_required
@@ -358,9 +358,9 @@ def take_task(request, pk):
 
     # Проверяем, что заявка ещё не назначена и пользователь — сотрудник
     if problem.assigned_to:
-        messages.warning(request, "Заявка уже назначена другому сотруднику.")
+        messages.warning(request, _("Заявка уже назначена другому сотруднику."))
     elif not request.user.is_staff:
-        messages.error(request, "Только сотрудники могут брать заявки в работу.")
+        messages.error(request, _("Только сотрудники могут брать заявки в работу."))
     else:
         problem.assigned_to = request.user
         problem.assigned_at = timezone.now()
@@ -369,10 +369,10 @@ def take_task(request, pk):
         # Создаём уведомление (опционально)
         Notification.objects.create(
             user=request.user,
-            message=f"Вы взяли в работу заявку: {problem.title}",
+            message=_(f"Вы взяли в работу заявку: {problem.title}"),
             problem=problem
         )
 
-        messages.success(request, f"Вы успешно взяли заявку «{problem.title}» в работу!")
+        messages.success(request, _(f"Вы успешно взяли заявку «{problem.title}» в работу!"))
 
     return redirect('issues:problem_detail', pk=pk)

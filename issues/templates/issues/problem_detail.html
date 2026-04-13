@@ -1,4 +1,5 @@
 {% extends 'issues/base.html' %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-4">
@@ -8,9 +9,9 @@
             <h2 class="card-title">{{ problem.title }}</h2>
 
             <p class="text-muted">
-                Категория: {{ problem.category }} |
-                Статус: <strong>{{ problem.status }}</strong> |
-                Автор: {{ problem.author.username }}
+                {% trans "Категория" %}: {{ problem.category }} |
+                {% trans "Статус" %}: <strong>{{ problem.status }}</strong> |
+                {% trans "Автор" %}: {{ problem.author.username }}
             </p>
 
             <hr>
@@ -24,30 +25,30 @@
                 <img src="{{ problem.image.url }}"
                      class="img-fluid rounded"
                      style="max-height: 400px;"
-                     alt="Изображение проблемы">
+                     alt="{% trans 'Изображение проблемы' %}">
             {% endif %}
 
-            <!-- Форма изменения статуса (только для staff) -->
+            <!-- Форма изменения статуса -->
             {% if user.is_staff %}
                 <hr>
                 <form method="post" action="{% url 'issues:change_problem_status' problem.id %}">
                     {% csrf_token %}
-                    <label class="form-label">Изменить статус:</label>
+                    <label class="form-label">{% trans "Изменить статус:" %}</label>
                     <select name="status" class="form-select w-25">
-                        <option value="new"        {% if problem.status == 'new'        %}selected{% endif %}>new</option>
-                        <option value="in_progress"{% if problem.status == 'in_progress' %}selected{% endif %}>in_progress</option>
-                        <option value="resolved"   {% if problem.status == 'resolved'   %}selected{% endif %}>resolved</option>
-                        <option value="closed"     {% if problem.status == 'closed'     %}selected{% endif %}>closed</option>
+                        <option value="new"        {% if problem.status == 'new'        %}selected{% endif %}>{% trans "new" %}</option>
+                        <option value="in_progress"{% if problem.status == 'in_progress' %}selected{% endif %}>{% trans "in_progress" %}</option>
+                        <option value="resolved"   {% if problem.status == 'resolved'   %}selected{% endif %}>{% trans "resolved" %}</option>
+                        <option value="closed"     {% if problem.status == 'closed'     %}selected{% endif %}>{% trans "closed" %}</option>
                     </select>
                     <button type="submit" class="btn btn-primary mt-2">
-                        Сохранить
+                        {% trans "Сохранить" %}
                     </button>
                 </form>
             {% endif %}
 
             <!-- История статусов -->
             <hr>
-            <h5>История статусов</h5>
+            <h5>{% trans "История статусов" %}</h5>
 
             <ul class="list-group">
                 {% for history in problem.status_history.all %}
@@ -58,29 +59,29 @@
                         {% if history.changed_by %}
                             {{ history.changed_by.username }}
                         {% else %}
-                            Неизвестно
+                            {% trans "Неизвестно" %}
                         {% endif %}
                         )
                     </li>
                 {% empty %}
                     <li class="list-group-item text-muted">
-                        История пока отсутствует
+                        {% trans "История пока отсутствует" %}
                     </li>
                 {% endfor %}
             </ul>
 
             <!-- Оценка качества решения -->
             <hr>
-            <h5>Оцените качество решения</h5>
+            <h5>{% trans "Оцените качество решения" %}</h5>
 
             {% if can_rate %}
                 <form method="post">
                     {% csrf_token %}
 
                     <div class="mb-3">
-                        <label class="form-label">Ваша оценка (1–5)</label>
+                        <label class="form-label">{% trans "Ваша оценка (1–5)" %}</label>
                         <select name="rating" class="form-select w-25" required>
-                            <option value="">Выберите оценку</option>
+                            <option value="">{% trans "Выберите оценку" %}</option>
                             <option value="1">1 ★</option>
                             <option value="2">2 ★★</option>
                             <option value="3">3 ★★★</option>
@@ -90,36 +91,36 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Отзыв (опционально)</label>
-                        <textarea name="review_text" class="form-control" rows="3" placeholder="Ваш комментарий..."></textarea>
+                        <label class="form-label">{% trans "Отзыв (опционально)" %}</label>
+                        <textarea name="review_text" class="form-control" rows="3" placeholder="{% trans 'Ваш комментарий...' %}"></textarea>
                     </div>
 
                     <button type="submit" name="rating_submit" class="btn btn-success mt-3">
-                        Отправить оценку
+                        {% trans "Отправить оценку" %}
                     </button>
                 </form>
             {% elif problem.rating %}
                 <p class="mt-3">
-                    <strong>Ваша оценка:</strong> {{ problem.rating }} / 5 ★
+                    <strong>{% trans "Ваша оценка" %}:</strong> {{ problem.rating }} / 5 ★
                     {% if problem.review_text %}
-                        <br><strong>Отзыв:</strong> {{ problem.review_text }}
+                        <br><strong>{% trans "Отзыв" %}:</strong> {{ problem.review_text }}
                     {% endif %}
                     {% if problem.rated_at %}
-                        <br><small>Оценено: {{ problem.rated_at|date:"d.m.Y H:i" }}</small>
+                        <br><small>{% trans "Оценено" %}: {{ problem.rated_at|date:"d.m.Y H:i" }}</small>
                     {% endif %}
                 </p>
             {% else %}
-                <p class="text-muted">Оценку может поставить только автор заявки после решения.</p>
+                <p class="text-muted">{% trans "Оценку может поставить только автор заявки после решения." %}</p>
             {% endif %}
 
-            <!-- Кнопка удаления (только для superuser, если статус closed) -->
+            <!-- Кнопка удаления -->
             {% if user.is_superuser and problem.status == 'closed' %}
                 <hr>
                 <form method="post" action="{% url 'issues:delete_problem' problem.id %}"
-                      onsubmit="return confirm('Вы уверены, что хотите удалить проблему?');">
+                      onsubmit="return confirm('{% trans "Вы уверены, что хотите удалить проблему?" %}');">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger mt-3">
-                        Удалить проблему
+                        {% trans "Удалить проблему" %}
                     </button>
                 </form>
             {% endif %}
@@ -127,39 +128,39 @@
             <!-- Кнопка назад -->
             <hr>
             <a href="{% url 'issues:problem_list' %}" class="btn btn-secondary mt-3">
-                ← Назад к списку
+                ← {% trans "Назад к списку" %}
             </a>
 
+            <!-- Назначить ответственного -->
             {% if user.is_superuser %}
-            <h5>Назначить/изменить ответственного</h5>
-            <form method="post" action="{% url 'issues:assign_staff' problem.pk %}">
-                {% csrf_token %}
-                <select name="assigned_to" class="form-select w-50">
-            <option value="">Не назначено</option>
-            {% for staff in staff_list %}
-                <option value="{{ staff.id }}" {% if problem.assigned_to == staff %}selected{% endif %}>
-                    {{ staff.username }}
-                </option>
-            {% endfor %}
-                </select>
                 <hr>
-                <button type="submit" class="btn btn-primary mt-2">Сохранить</button>
-            </form>
+                <h5>{% trans "Назначить/изменить ответственного" %}</h5>
+                <form method="post" action="{% url 'issues:assign_staff' problem.pk %}">
+                    {% csrf_token %}
+                    <select name="assigned_to" class="form-select w-50">
+                        <option value="">{% trans "Не назначено" %}</option>
+                        {% for staff in staff_list %}
+                            <option value="{{ staff.id }}" {% if problem.assigned_to == staff %}selected{% endif %}>
+                                {{ staff.username }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-2">{% trans "Сохранить" %}</button>
+                </form>
             {% endif %}
 
-            <!-- Кнопка "Взять в работу" для сотрудников -->
-{% if user.is_staff and not problem.assigned_to %}
-    <div class="mt-4">
-        <form method="post" action="{% url 'issues:take_task' problem.pk %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-warning btn-lg">
-                Взять заявку в работу
-            </button>
-        </form>
-        <small class="text-muted">После взятия заявки вы станете ответственным</small>
-    </div>
-{% endif %}
-
+            <!-- Кнопка "Взять в работу" -->
+            {% if user.is_staff and not problem.assigned_to %}
+                <div class="mt-4">
+                    <form method="post" action="{% url 'issues:take_task' problem.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning btn-lg">
+                            {% trans "Взять заявку в работу" %}
+                        </button>
+                    </form>
+                    <small class="text-muted">{% trans "После взятия заявки вы станете ответственным" %}</small>
+                </div>
+            {% endif %}
 
         </div>
     </div>

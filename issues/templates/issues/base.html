@@ -1,4 +1,6 @@
+
 <!DOCTYPE html>
+{% load i18n %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +9,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="{% url 'issues:home' %}">Университет</a>
+    <a class="navbar-brand" href="{% url 'issues:home' %}">{% trans "Университет" %}</a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -15,70 +17,81 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <!-- Уведомления — теперь слева -->
+
+            <!-- Уведомления -->
             {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle position-relative" href="#"
                        id="notificationDropdown" role="button" data-bs-toggle="dropdown"
                        aria-expanded="false">
-                        Уведомления
+                        {% trans "Уведомления" %}
                         {% if unread_notifications > 0 %}
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 {{ unread_notifications }}
-                                <span class="visually-hidden">непрочитанных</span>
                             </span>
                         {% endif %}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-start shadow-lg"
                         aria-labelledby="notificationDropdown"
-                        style="max-height: 400px; overflow-y: auto; min-width: 320px; z-index: 1050;">
+                        style="max-height: 400px; overflow-y: auto; min-width: 320px;">
                         {% for notif in user.notifications.all|slice:":10" %}
                             <li>
                                 <a class="dropdown-item {% if not notif.is_read %}fw-bold bg-light{% endif %}"
                                    href="{% if notif.problem %}{% url 'issues:problem_detail' notif.problem.pk %}{% else %}#{% endif %}">
                                     {{ notif.message|truncatechars:70 }}
-                                    <small class="d-block text-muted mt-1">{{ notif.created_at|timesince }} назад</small>
+                                    <small class="d-block text-muted mt-1">{{ notif.created_at|timesince }} {% trans "назад" %}</small>
                                 </a>
                             </li>
                         {% empty %}
-                            <li><span class="dropdown-item text-muted text-center py-3">Нет новых уведомлений</span></li>
+                            <li><span class="dropdown-item text-muted text-center py-3">{% trans "Нет новых уведомлений" %}</span></li>
                         {% endfor %}
-                        {% if user.notifications.exists %}
-                            <li><hr class="dropdown-divider"></li>
-                            <li class="text-center py-2">
-                                <a href="#" class="btn btn-sm btn-outline-primary">Все уведомления</a>
-                            </li>
-                        {% endif %}
                     </ul>
                 </li>
             {% endif %}
 
-            <!-- Остальные ссылки справа от уведомлений -->
+            <!-- Основные ссылки -->
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'issues:problem_list' %}">Все заявки</a>
+                <a class="nav-link" href="{% url 'issues:problem_list' %}">{% trans "Все заявки" %}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'issues:problem_create' %}">Создать заявку</a>
+                <a class="nav-link" href="{% url 'issues:problem_create' %}">{% trans "Создать заявку" %}</a>
             </li>
 
-            <!-- Если хочешь статистику тоже слева — добавь сюда -->
             {% if user.is_staff %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'issues:statistics' %}">Статистика</a>
+                    <a class="nav-link" href="{% url 'issues:statistics' %}">{% trans "Статистика" %}</a>
                 </li>
             {% endif %}
+
+            <!-- Переключатель языка -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="languageDropdown"
+                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {% trans "Язык" %}
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'set_language' %}?language=ru">Русский</a></li>
+                    <li><a class="dropdown-item" href="{% url 'set_language' %}?language=kk">Қазақша</a></li>
+                    <li><a class="dropdown-item" href="{% url 'set_language' %}?language=en">English</a></li>
+                </ul>
+            </li>
+
         </ul>
 
-        <!-- Пользователь и выход — справа -->
+        <!-- Пользователь и выход (справа) -->
         {% if user.is_authenticated %}
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <span class="nav-link">Пользователь: {{ user.username }}</span>
+                    <span class="nav-link text-white">
+                        {% trans "Пользователь" %}: {{ user.username }}
+                    </span>
                 </li>
                 <li class="nav-item">
                     <form method="post" action="{% url 'logout' %}" class="d-inline">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-danger btn-sm">Выйти</button>
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            {% trans "Выйти" %}
+                        </button>
                     </form>
                 </li>
             </ul>
