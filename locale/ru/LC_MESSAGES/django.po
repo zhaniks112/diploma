@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-13 19:43+0500\n"
+"POT-Creation-Date: 2026-04-14 18:56+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -231,61 +231,47 @@ msgstr ""
 msgid "Привет, гость!"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:18
-msgid ""
-"\n"
-"                Это удобный сервис для студентов, преподавателей и "
-"сотрудников университета.\n"
-"                Здесь вы можете быстро сообщить о любой инфраструктурной "
-"проблеме кампуса\n"
-"                (неисправный проектор, протекающая крыша, слабый Wi-Fi и "
-"многое другое),\n"
-"                отслеживать статус решения и участвовать в улучшении нашего "
-"университета.\n"
-"                "
-msgstr ""
-
-#: .\issues\templates\issues\home.html:30
+#: .\issues\templates\issues\home.html:28
 msgid "Сообщите о проблеме"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:31
+#: .\issues\templates\issues\home.html:29
 msgid "Создайте заявку за 30 секунд с фото и описанием."
 msgstr ""
 
-#: .\issues\templates\issues\home.html:38
+#: .\issues\templates\issues\home.html:36
 msgid "Отслеживайте статус"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:39
+#: .\issues\templates\issues\home.html:37
 msgid "Узнавайте, когда проблема будет решена."
 msgstr ""
 
-#: .\issues\templates\issues\home.html:46
+#: .\issues\templates\issues\home.html:44
 msgid "Участвуйте в решении"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:47
+#: .\issues\templates\issues\home.html:45
 msgid "Помогайте университету становиться лучше."
 msgstr ""
 
-#: .\issues\templates\issues\home.html:55
+#: .\issues\templates\issues\home.html:53
 #: .\issues\templates\issues\register.html:71
 #: .\issues\templates\registration\login.html:28
 msgid "Войти"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:56
+#: .\issues\templates\issues\home.html:54
 #: .\issues\templates\issues\register.html:64
 #: .\issues\templates\registration\login.html:32
 msgid "Зарегистрироваться"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:62
+#: .\issues\templates\issues\home.html:60
 msgid "Перейти к списку всех заявок →"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:67
+#: .\issues\templates\issues\home.html:65
 #, python-format
 msgid ""
 "\n"
@@ -303,22 +289,18 @@ msgid "Изменить статус:"
 msgstr ""
 
 #: .\issues\templates\issues\problem_detail.html:38
-#: .\issues\templates\issues\problem_list.html:40
 msgid "new"
 msgstr ""
 
 #: .\issues\templates\issues\problem_detail.html:39
-#: .\issues\templates\issues\problem_list.html:41
 msgid "in_progress"
 msgstr ""
 
 #: .\issues\templates\issues\problem_detail.html:40
-#: .\issues\templates\issues\problem_list.html:42
 msgid "resolved"
 msgstr ""
 
 #: .\issues\templates\issues\problem_detail.html:41
-#: .\issues\templates\issues\problem_list.html:43
 msgid "closed"
 msgstr ""
 
@@ -447,6 +429,10 @@ msgstr ""
 
 #: .\issues\templates\issues\problem_list.html:60
 msgid "Применить"
+msgstr ""
+
+#: .\issues\templates\issues\problem_list.html:79
+msgid "Не указана"
 msgstr ""
 
 #: .\issues\templates\issues\problem_list.html:83

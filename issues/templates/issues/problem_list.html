@@ -37,10 +37,10 @@
             <div class="col-md-2">
                 <select name="status" class="form-select">
                     <option value="">{% trans "Все статусы" %}</option>
-                    <option value="new"        {% if selected_status == 'new'        %}selected{% endif %}>{% trans "new" %}</option>
-                    <option value="in_progress"{% if selected_status == 'in_progress' %}selected{% endif %}>{% trans "in_progress" %}</option>
-                    <option value="resolved"   {% if selected_status == 'resolved'   %}selected{% endif %}>{% trans "resolved" %}</option>
-                    <option value="closed"     {% if selected_status == 'closed'     %}selected{% endif %}>{% trans "closed" %}</option>
+                    <option value="new"        {% if selected_status == 'new'        %}selected{% endif %}>{{ problem.get_status_display|default:"New" }}</option>
+                    <option value="in_progress"{% if selected_status == 'in_progress' %}selected{% endif %}>{{ problem.get_status_display|default:"In Progress" }}</option>
+                    <option value="resolved"   {% if selected_status == 'resolved'   %}selected{% endif %}>{{ problem.get_status_display|default:"Resolved" }}</option>
+                    <option value="closed"     {% if selected_status == 'closed'     %}selected{% endif %}>{{ problem.get_status_display|default:"Closed" }}</option>
                 </select>
             </div>
 
@@ -76,8 +76,8 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ problem.title }}</h5>
                             <p class="card-text text-muted small">
-                                {% trans "Категория" %}: {{ problem.category|default:"{% trans 'Не указана' %}" }}<br>
-                                {% trans "Статус" %}: <strong>{{ problem.status }}</strong><br>
+                                {% trans "Категория" %}: {{ problem.category|default:_("Не указана") }}<br>
+                                {% trans "Статус" %}: <strong>{{ problem.get_status_display }}</strong><br>
                                 {% trans "Автор" %}: {{ problem.author.username }}<br>
                                 {% if problem.rating %}
                                     {% trans "Оценка" %}: {{ problem.rating }} ★
