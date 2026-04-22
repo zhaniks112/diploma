@@ -7,6 +7,7 @@ from django.contrib.auth import views as auth_views
 
 # Основные URL без локализации
 urlpatterns = [
+
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path("i18n/", include("django.conf.urls.i18n")),
@@ -16,7 +17,7 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('', include('issues.urls')),   # Главная и все маршруты приложения
+    path('', include('issues.urls')),
     prefix_default_language=False,
 )
 

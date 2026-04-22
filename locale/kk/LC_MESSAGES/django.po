@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-14 18:56+0500\n"
+"POT-Creation-Date: 2026-04-21 15:33+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -173,7 +173,7 @@ msgstr ""
 
 #: .\issues\models.py:170 .\issues\templates\issues\base.html:27
 msgid "Уведомления"
-msgstr ""
+msgstr "Хабарламалар"
 
 #: .\issues\templates\issues\base.html:12
 msgid "Университет"
@@ -202,15 +202,15 @@ msgstr "Өтініш жасау"
 msgid "Статистика"
 msgstr ""
 
-#: .\issues\templates\issues\base.html:70
+#: .\issues\templates\issues\base.html:69
 msgid "Язык"
 msgstr ""
 
-#: .\issues\templates\issues\base.html:86
+#: .\issues\templates\issues\base.html:96
 msgid "Пользователь"
 msgstr ""
 
-#: .\issues\templates\issues\base.html:93
+#: .\issues\templates\issues\base.html:103
 msgid "Выйти"
 msgstr ""
 
@@ -229,47 +229,56 @@ msgstr ""
 msgid "Привет, гость!"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:28
+#: .\issues\templates\issues\home.html:18
+msgid ""
+"Это удобная система для студентов, преподавателей и сотрудников "
+"университета. Здесь вы можете быстро сообщить о любой инфраструктурной "
+"проблеме кампуса (неисправный проектор, протекающая крыша, слабый Wi-Fi и "
+"многое другое), отслеживать статус решения и участвовать в улучшении нашего "
+"университета."
+msgstr "Бұл — студенттер, оқытушылар және университет қызметкерлеріне арналған ыңғайлы жүйе. Мұнда сіз кампустағы кез келген инфрақұрылымдық мәселе (істен шыққан проектор, төбеден су ағу, нашар Wi-Fi және т.б.) туралы тез хабарлай аласыз, мәселенің шешілу барысын бақылап, университетімізді жақсартуға атсалыса аласыз."
+
+#: .\issues\templates\issues\home.html:25
 msgid "Сообщите о проблеме"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:29
+#: .\issues\templates\issues\home.html:26
 msgid "Создайте заявку за 30 секунд с фото и описанием."
 msgstr ""
 
-#: .\issues\templates\issues\home.html:36
+#: .\issues\templates\issues\home.html:33
 msgid "Отслеживайте статус"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:37
+#: .\issues\templates\issues\home.html:34
 msgid "Узнавайте, когда проблема будет решена."
 msgstr ""
 
-#: .\issues\templates\issues\home.html:44
+#: .\issues\templates\issues\home.html:41
 msgid "Участвуйте в решении"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:45
+#: .\issues\templates\issues\home.html:42
 msgid "Помогайте университету становиться лучше."
 msgstr ""
 
-#: .\issues\templates\issues\home.html:53
+#: .\issues\templates\issues\home.html:50
 #: .\issues\templates\issues\register.html:71
 #: .\issues\templates\registration\login.html:28
 msgid "Войти"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:54
+#: .\issues\templates\issues\home.html:51
 #: .\issues\templates\issues\register.html:64
 #: .\issues\templates\registration\login.html:32
 msgid "Зарегистрироваться"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:60
+#: .\issues\templates\issues\home.html:57
 msgid "Перейти к списку всех заявок →"
 msgstr ""
 
-#: .\issues\templates\issues\home.html:65
+#: .\issues\templates\issues\home.html:62
 #, python-format
 msgid ""
 "\n"
@@ -559,53 +568,34 @@ msgstr ""
 msgid "Нет аккаунта?"
 msgstr ""
 
-#: .\issues\views.py:223
+#: .\issues\views.py:218
 msgid "Заявка создана!"
 msgstr ""
 
-#: .\issues\views.py:347
+#: .\issues\views.py:342
 msgid "Ответственный назначен!"
 msgstr ""
 
-#: .\issues\views.py:352
+#: .\issues\views.py:347
 msgid "Ответственный снят"
 msgstr ""
 
-#: .\issues\views.py:361
+#: .\issues\views.py:356
 msgid "Заявка уже назначена другому сотруднику."
 msgstr ""
 
-#: .\issues\views.py:363
+#: .\issues\views.py:358
 msgid "Только сотрудники могут брать заявки в работу."
 msgstr ""
 
-#, fuzzy
-#~| msgid ""
-#~| "                Это удобный сервис для студентов, преподавателей и "
-#~| "сотрудников университета.\n"
-#~| "                Здесь вы можете быстро сообщить о любой инфраструктурной "
-#~| "проблеме кампуса\n"
-#~| "                (неисправный проектор, протекающая крыша, слабый Wi-Fi и "
-#~| "многое другое),\n"
-#~| "                отслеживать статус решения и участвовать в улучшении "
-#~| "нашего университета.\n"
-#~| "                "
-#~ msgid ""
-#~ " Это удобная система для студентов, преподавателей и сотрудников "
-#~ "университета.\n"
-#~ "                Здесь вы можете быстро сообщить о любой инфраструктурной "
-#~ "проблеме кампуса\n"
-#~ "                (неисправный проектор, протекающая крыша, слабый Wi-Fi и "
-#~ "многое другое),\n"
-#~ "                отслеживать статус решения и участвовать в улучшении "
-#~ "нашего университета.\n"
-#~ "                "
-#~ msgstr ""
-#~ "Бұл студенттер, оқытушылар және университет қызметкерлері үшін ыңғайлы "
-#~ "қызмет. \n"
-#~ "Мұнда сіз кампустың кез келген инфрақұрылымдық мәселесі туралы жылдам "
-#~ "хабарлай аласыз \n"
-#~ "(сынған проектор, шатырдың ағып тұруы, әлсіз Wi-Fi және басқа да көптеген "
-#~ "мәселелер), \n"
-#~ "шешілу барысын бақылай аласыз және университетімізді жақсартуға үлес қоса "
-#~ "аласыз."
+#: .\university_issues\settings.py:114
+msgid "Russian"
+msgstr ""
+
+#: .\university_issues\settings.py:115
+msgid "Kazakh"
+msgstr ""
+
+#: .\university_issues\settings.py:116
+msgid "English"
+msgstr ""

@@ -1,8 +1,5 @@
 from django.contrib import messages
 from django.contrib.auth import login
-from django.db.models.functions import Cast
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.admin.views.decorators import staff_member_required
 from django.utils import timezone
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Avg, Count, ExpressionWrapper, FloatField, F, When, Value, Case
@@ -10,13 +7,11 @@ from django.db.models import Q
 import django.db.models as models
 from django.contrib.auth.models import User
 from .models import Problem, StatusHistory, Category, Notification
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import ProblemForm, RegisterForm, ProblemRatingForm
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
 from .models import Problem
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 

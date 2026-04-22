@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-14 18:56+0500\n"
+"POT-Creation-Date: 2026-04-21 15:33+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -172,8 +172,6 @@ msgid "Уведомление"
 msgstr "Notification"
 
 #: .\issues\models.py:170 .\issues\templates\issues\base.html:27
-#, fuzzy
-#| msgid "Уведомление"
 msgid "Уведомления"
 msgstr "Notifications"
 
@@ -206,15 +204,15 @@ msgstr "Create an issue"
 msgid "Статистика"
 msgstr "Statistic"
 
-#: .\issues\templates\issues\base.html:70
+#: .\issues\templates\issues\base.html:69
 msgid "Язык"
 msgstr "Language"
 
-#: .\issues\templates\issues\base.html:86
+#: .\issues\templates\issues\base.html:96
 msgid "Пользователь"
 msgstr "User"
 
-#: .\issues\templates\issues\base.html:93
+#: .\issues\templates\issues\base.html:103
 msgid "Выйти"
 msgstr "Exit"
 
@@ -235,47 +233,56 @@ msgstr ""
 msgid "Привет, гость!"
 msgstr "Hi, guest!"
 
-#: .\issues\templates\issues\home.html:28
+#: .\issues\templates\issues\home.html:18
+msgid ""
+"Это удобная система для студентов, преподавателей и сотрудников "
+"университета. Здесь вы можете быстро сообщить о любой инфраструктурной "
+"проблеме кампуса (неисправный проектор, протекающая крыша, слабый Wi-Fi и "
+"многое другое), отслеживать статус решения и участвовать в улучшении нашего "
+"университета."
+msgstr "This is a convenient system for students, faculty, and university staff. Here, you can quickly report any campus infrastructure issues (such as a faulty projector, a leaking roof, weak Wi-Fi, and more), track the resolution status, and contribute to improving our university."
+
+#: .\issues\templates\issues\home.html:25
 msgid "Сообщите о проблеме"
 msgstr "Report for problem"
 
-#: .\issues\templates\issues\home.html:29
+#: .\issues\templates\issues\home.html:26
 msgid "Создайте заявку за 30 секунд с фото и описанием."
 msgstr "Create a request in 30 seconds with a photo and description."
 
-#: .\issues\templates\issues\home.html:36
+#: .\issues\templates\issues\home.html:33
 msgid "Отслеживайте статус"
 msgstr "Track the status"
 
-#: .\issues\templates\issues\home.html:37
+#: .\issues\templates\issues\home.html:34
 msgid "Узнавайте, когда проблема будет решена."
 msgstr "Find out when the problem will be solved."
 
-#: .\issues\templates\issues\home.html:44
+#: .\issues\templates\issues\home.html:41
 msgid "Участвуйте в решении"
 msgstr "Participate in the solution"
 
-#: .\issues\templates\issues\home.html:45
+#: .\issues\templates\issues\home.html:42
 msgid "Помогайте университету становиться лучше."
 msgstr "Help the university become better."
 
-#: .\issues\templates\issues\home.html:53
+#: .\issues\templates\issues\home.html:50
 #: .\issues\templates\issues\register.html:71
 #: .\issues\templates\registration\login.html:28
 msgid "Войти"
 msgstr "Sign in"
 
-#: .\issues\templates\issues\home.html:54
+#: .\issues\templates\issues\home.html:51
 #: .\issues\templates\issues\register.html:64
 #: .\issues\templates\registration\login.html:32
 msgid "Зарегистрироваться"
 msgstr "Register"
 
-#: .\issues\templates\issues\home.html:60
+#: .\issues\templates\issues\home.html:57
 msgid "Перейти к списку всех заявок →"
 msgstr "Go to the list of all requests →"
 
-#: .\issues\templates\issues\home.html:65
+#: .\issues\templates\issues\home.html:62
 #, python-format
 msgid ""
 "\n"
@@ -557,22 +564,34 @@ msgstr "Incorrect username or password"
 msgid "Нет аккаунта?"
 msgstr "Don't have an account?"
 
-#: .\issues\views.py:223
+#: .\issues\views.py:218
 msgid "Заявка создана!"
 msgstr "Request created successfully!"
 
-#: .\issues\views.py:347
+#: .\issues\views.py:342
 msgid "Ответственный назначен!"
 msgstr "Responsible person assigned!"
 
-#: .\issues\views.py:352
+#: .\issues\views.py:347
 msgid "Ответственный снят"
 msgstr "Responsible person removed"
 
-#: .\issues\views.py:361
+#: .\issues\views.py:356
 msgid "Заявка уже назначена другому сотруднику."
 msgstr "The request is already assigned to another staff member."
 
-#: .\issues\views.py:363
+#: .\issues\views.py:358
 msgid "Только сотрудники могут брать заявки в работу."
 msgstr "Only staff members can take requests for work."
+
+#: .\university_issues\settings.py:114
+msgid "Russian"
+msgstr ""
+
+#: .\university_issues\settings.py:115
+msgid "Kazakh"
+msgstr ""
+
+#: .\university_issues\settings.py:116
+msgid "English"
+msgstr ""
