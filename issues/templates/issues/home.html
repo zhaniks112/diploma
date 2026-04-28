@@ -4,7 +4,7 @@
 <div class="container mt-5 text-center">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <h1 class="display-4 mb-4">{% trans "Добро пожаловать в наш сервис по решению университетских проблем!" %}</h1>
+            <h1 class="display-4 mb-4">{% trans "Добро пожаловать в наш сайт по решению университетских проблем!" %}</h1>
 
             {% if user.is_authenticated %}
                 <h3 class="mb-4">{% blocktrans with username=user.username %} Привет, {{ username }}!

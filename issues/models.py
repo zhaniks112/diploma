@@ -151,17 +151,21 @@ class StatusHistory(models.Model):
     def __str__(self):
         return f"{self.problem.title}: {self.old_status} → {self.new_status}"
 
-
+# models.py
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
-    message = models.TextField(verbose_name=_("Сообщение"))
+    message = models.TextField(verbose_name=_("Сообщение"))  # оставь для старых записей
+
+    # Новые поля для локализации
+    message_key = models.CharField(max_length=100, blank=True, verbose_name=_("Ключ сообщения"))
+    message_params = models.JSONField(default=dict, blank=True, verbose_name=_("Параметры сообщения"))
+
     is_read = models.BooleanField(default=False, verbose_name=_("Прочитано"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата создания"))
     problem = models.ForeignKey(
         Problem,
         on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        null=True, blank=True,
         related_name='notifications'
     )
 

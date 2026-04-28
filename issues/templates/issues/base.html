@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 {% load i18n %}
+{% load custom_tags %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,14 +36,20 @@
                         aria-labelledby="notificationDropdown"
                         style="max-height: 400px; overflow-y: auto; min-width: 320px;">
                         {% for notif in user.notifications.all|slice:":10" %}
-                            <li>
-                                <a class="dropdown-item {% if not notif.is_read %}fw-bold bg-light{% endif %}"
-                                   href="{% if notif.problem %}{% url 'issues:problem_detail' notif.problem.pk %}{% else %}#{% endif %}">
-                                    {{ notif.message|truncatechars:70 }}
-                                    <small class="d-block text-muted mt-1">{{ notif.created_at|timesince }} {% trans "назад" %}</small>
-                                </a>
-                            </li>
-                        {% empty %}
+    <li>
+        <a class="dropdown-item {% if not notif.is_read %}fw-bold bg-light{% endif %}"
+           href="{% if notif.problem %}{% url 'issues:problem_detail' notif.problem.pk %}{% else %}#{% endif %}">
+
+            <div class="text-wrap" style="max-width: 300px;">
+                {{ notif|translate_notification }}
+            </div>
+
+            <small class="d-block text-muted mt-1">
+                {{ notif.created_at|smart_timesince }}
+            </small>
+        </a>
+    </li>
+{% empty %}
                             <li><span class="dropdown-item text-muted text-center py-3">{% trans "Нет новых уведомлений" %}</span></li>
                         {% endfor %}
                     </ul>

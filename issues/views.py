@@ -170,14 +170,12 @@ def change_problem_status(request, pk):
         new_status = request.POST.get('status')
 
         if new_status and new_status != problem.status:
-            # Сохраняем историю
             StatusHistory.objects.create(
                 problem=problem,
                 old_status=problem.status,
                 new_status=new_status,
                 changed_by=request.user
             )
-            # Меняем статус
             problem.status = new_status
 
             if new_status in ['resolved', 'closed']:
@@ -188,16 +186,16 @@ def change_problem_status(request, pk):
             if problem.author.email:
                 send_status_change_email(problem, new_status)
 
-            if problem.author != request.user:  # не уведомляем самого себя
-                print(f"[NOTIF] Создаём уведомление для {problem.author.username}")
+            if problem.author != request.user:
                 Notification.objects.create(
                     user=problem.author,
-                    message=f"Ваша заявка «{problem.title}» изменила статус на «{new_status}»",
+                    message_key="notification.status_changed",
+                    message_params={"title": problem.title, "status": new_status},  # ← сырой статус
                     problem=problem
                 )
-                print("[NOTIF] Уведомление создано")
 
     return redirect('issues:problem_detail', pk=pk)
+
 @login_required
 def problem_create(request):
     if request.method == 'POST':
@@ -208,12 +206,7 @@ def problem_create(request):
             problem.save()
             send_new_problem_email(problem)
 
-            if problem.assigned_to:
-                Notification.objects.create(
-                    user=problem.assigned_to,
-                    message=_(f"Вам назначена новая заявка: {problem.title}"),
-                    problem=problem
-                )
+
 
             messages.success(request, _("Заявка создана!"))
             return redirect('issues:problem_list')
@@ -333,10 +326,11 @@ def assign_staff(request, pk):
             problem.assigned_to = assigned_to
             problem.assigned_at = timezone.now()
             problem.save()
-            # Уведомляем нового ответственного
+
             Notification.objects.create(
                 user=assigned_to,
-                message=_(f"Вам назначена заявка: {problem.title}"),
+                message_key="notification.assigned",
+                message_params={"title": problem.title},
                 problem=problem
             )
             messages.success(request, _("Ответственный назначен!"))
@@ -351,7 +345,6 @@ def assign_staff(request, pk):
 def take_task(request, pk):
     problem = get_object_or_404(Problem, pk=pk)
 
-    # Проверяем, что заявка ещё не назначена и пользователь — сотрудник
     if problem.assigned_to:
         messages.warning(request, _("Заявка уже назначена другому сотруднику."))
     elif not request.user.is_staff:
@@ -361,13 +354,13 @@ def take_task(request, pk):
         problem.assigned_at = timezone.now()
         problem.save()
 
-        # Создаём уведомление (опционально)
         Notification.objects.create(
             user=request.user,
-            message=_(f"Вы взяли в работу заявку: {problem.title}"),
+            message_key="notification.taken_to_work",
+            message_params={"title": problem.title},
             problem=problem
         )
 
-        messages.success(request, _(f"Вы успешно взяли заявку «{problem.title}» в работу!"))
+        messages.success(request, _("Вы успешно взяли заявку «%(title)s» в работу!") % {"title": problem.title})
 
     return redirect('issues:problem_detail', pk=pk)

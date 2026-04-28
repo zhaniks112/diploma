@@ -8,17 +8,17 @@
         {% csrf_token %}
 
         <div class="mb-3">
-            <label for="title" class="form-label">Название</label>
+            <label for="title" class="form-label">{% trans "Название" %}</label>
             <input type="text" class="form-control" id="title" name="title" required>
         </div>
 
         <div class="mb-3">
-            <label for="description" class="form-label">Описание</label>
+            <label for="description" class="form-label">{% trans "Описание" %}</label>
             <textarea class="form-control" id="description" name="description" required rows="5"></textarea>
         </div>
 
         <div class="mb-3">
-    <label class="form-label">Категория проблемы <span class="text-danger">*</span></label>
+    <label class="form-label">{% trans "Категория проблемы" %} <span class="text-danger">*</span></label>
     {{ form.category }}
     {% if form.category.errors %}
         <div class="text-danger small">{{ form.category.errors }}</div>
@@ -26,7 +26,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="image" class="form-label">Изображение (опционально)</label>
+            <label for="image" class="form-label">{% trans "Изображение (опционально)" %}</label>
             <input type="file" class="form-control" id="image" name="image">
         </div>
 
@@ -35,9 +35,11 @@
             <button type="submit" class="btn btn-primary">
                 Создать
             </button>
+
+            {% trans "Изменения будут потеряны. Вернуться к списку?" as confirm_msg %}
             <button type="button" class="btn btn-outline-danger"
-                    onclick="if(confirm('Изменения будут потеряны. Вернуться к списку?')) history.back();">
-                Назад к списку
+                    onclick="if(confirm('{{ confirm_msg|escapejs }}')) history.back();">
+                {% trans "Назад к списку" %}
             </button>
         </div>
     </form>
