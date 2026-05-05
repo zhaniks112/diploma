@@ -3,7 +3,6 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
-
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name=_("Название"))
     slug = models.SlugField(max_length=120, unique=True, blank=True)
@@ -176,3 +175,24 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.user.username} — {self.message[:50]}"
+
+class StaffProfile(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='staff_profile',
+        verbose_name=_("Сотрудник")
+    )
+    categories = models.ManyToManyField(
+        Category,
+        blank=True,
+        related_name='staff_members',
+        verbose_name=_("Категории")
+    )
+
+    class Meta:
+        verbose_name = _("Профиль сотрудника")
+        verbose_name_plural = _("Профили сотрудников")
+
+    def __str__(self):
+        return f"{self.user.username} — {', '.join(c.name for c in self.categories.all())}"

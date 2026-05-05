@@ -2,9 +2,23 @@
 {% load i18n %}
 
 {% block content %}
-<div class="container mt-5">
     <h2 class="mb-4 text-center">{% trans "Статистика персонала" %}</h2>
 
+    {{ chart_labels|json_script:"chart-labels" }}
+    {{ chart_total|json_script:"chart-total" }}
+    {{ chart_resolved|json_script:"chart-resolved" }}
+    <div class="card shadow mb-5">
+    <div class="card-body">
+        <h5 class="card-title text-center mb-3">{% trans "Заявки по категориям" %}</h5>
+        <div style="position: relative; height: 350px;">
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
+    </div>
+
+
+
+    {# ───── ТАБЛИЦА ПЕРСОНАЛА ───── #}
     {% if staff_stats %}
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
@@ -51,8 +65,8 @@
         </div>
     {% endif %}
 
+    {# ───── ТАБЛИЦА КАТЕГОРИЙ ───── #}
     <h2 class="mb-4 text-center">{% trans "Топ проблемных категорий" %}</h2>
-
     {% if category_stats %}
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
@@ -101,5 +115,58 @@
             ← {% trans "Назад к заявкам" %}
         </a>
     </div>
-</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels   = JSON.parse(document.getElementById('chart-labels').textContent);
+        const total    = JSON.parse(document.getElementById('chart-total').textContent);
+        const resolved = JSON.parse(document.getElementById('chart-resolved').textContent);
+
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: '{% trans "Всего заявок" %}',
+                        data: total,
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        borderRadius: 6,
+                    },
+                    {
+                        label: '{% trans "Решено" %}',
+                        data: resolved,
+                        backgroundColor: 'rgba(75, 192, 100, 0.7)',
+                        borderColor: 'rgba(75, 192, 100, 1)',
+                        borderWidth: 1,
+                        borderRadius: 6,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => ` ${ctx.dataset.label}: ${ctx.parsed.y}`
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { maxRotation: 0, minRotation: 0 }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1 }
+                    }
+                }
+            }
+        });
+    </script>
 {% endblock %}
+

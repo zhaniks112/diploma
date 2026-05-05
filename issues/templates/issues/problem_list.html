@@ -1,6 +1,5 @@
 {% extends 'issues/base.html' %}
 {% load i18n %}
-
 {% block content %}
 <div class="container mt-5">
     <h2 class="mb-4">{% trans "Все заявки" %}</h2>
@@ -11,17 +10,14 @@
     </div>
     {% endif %}
 
-    <!-- Форма фильтров и поиска -->
     <form method="get" class="mb-4">
         <div class="row g-3">
-            <!-- Поиск -->
             <div class="col-md-4">
                 <input type="text" name="q" class="form-control"
                        placeholder="{% trans 'Поиск по названию или описанию' %}"
                        value="{{ search_query|default:'' }}">
             </div>
 
-            <!-- Категория -->
             <div class="col-md-3">
                 <select name="category" class="form-select">
                     <option value="">{% trans "Все категории" %}</option>
@@ -33,7 +29,6 @@
                 </select>
             </div>
 
-            <!-- Статус -->
             <div class="col-md-2">
                 <select name="status" class="form-select">
                     <option value="">{% trans "Все статусы" %}</option>
@@ -44,7 +39,6 @@
                 </select>
             </div>
 
-            <!-- Сортировка -->
             <div class="col-md-3">
                 <select name="sort" class="form-select">
                     <option value="created_at"  {% if selected_sort == 'created_at'  %}selected{% endif %}>{% trans "Новые сверху" %}</option>
@@ -55,14 +49,12 @@
                 </select>
             </div>
 
-            <!-- Кнопка применения -->
             <div class="col-md-auto">
                 <button type="submit" class="btn btn-primary w-100">{% trans "Применить" %}</button>
             </div>
         </div>
     </form>
 
-    <!-- Список заявок -->
     {% if problems %}
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {% for problem in problems %}

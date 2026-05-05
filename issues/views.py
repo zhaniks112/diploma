@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import user_passes_test
 from .models import Problem
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-
+import json
 from .utils import send_new_problem_email, send_status_change_email
 from django.utils.translation import gettext_lazy as _
 
@@ -23,18 +23,19 @@ from django.utils.translation import gettext_lazy as _
 def problem_list(request):
     problems = Problem.objects.all()
 
-    if request.user.is_staff:
-        # Сотрудник видит только свои назначенные заявки + все завершённые
-        problems = problems.filter(
-            models.Q(assigned_to=request.user) |
-            models.Q(status__in=['resolved', 'closed']) |
-            models.Q(status='new')
-        )
+    if request.user.is_superuser:
+        pass  # суперпользователь видит все заявки
+    elif request.user.is_staff:
+        has_profile = hasattr(request.user, 'staff_profile')
+        if has_profile:
+            staff_categories = request.user.staff_profile.categories.all()
+        else:
+            staff_categories = Category.objects.none()
+
+        problems = problems.filter(category__in=staff_categories)
     else:
-        # Студент видит только свои заявки
         problems = problems.filter(author=request.user)
 
-    # Фильтры из GET-параметров
     category_id = request.GET.get('category')
 
     if category_id:
@@ -148,15 +149,34 @@ def problem_detail(request, pk):
     else:
         print("[DEBUG] Запрос не POST или нет rating_submit")
 
-    # Обновляем объект для шаблона
     problem.refresh_from_db()
 
-    staff_list = User.objects.filter(is_staff=True).order_by('username')
+    if problem.category:
+        staff_list = User.objects.filter(
+            is_staff=True,
+            staff_profile__categories=problem.category
+        ).order_by('username')
+    else:
+        staff_list = User.objects.filter(is_staff=True).order_by('username')
 
+    can_take = False
+    category_warning = False
+
+    if request.user.is_staff and not problem.assigned_to:
+        has_profile = hasattr(request.user, 'staff_profile')
+        if problem.category and has_profile:
+            can_take = request.user.staff_profile.categories.filter(
+                id=problem.category.id
+            ).exists()
+            category_warning = not can_take
+        else:
+            can_take = True
     context = {
         'problem': problem,
         'can_rate': can_rate,
         'staff_list': staff_list,
+        'can_take': can_take,
+        'category_warning': category_warning,
     }
 
     return render(request, 'issues/problem_detail.html', context)
@@ -290,7 +310,7 @@ def statistics(request):
         )
     ).order_by('-avg_rating', '-resolved_count')
 
-    category_stats = Category.objects.annotate(
+    category_stats = list(Category.objects.annotate(
         total_problems=Count('problems'),
         resolved_problems=Count(
             'problems',
@@ -300,7 +320,8 @@ def statistics(request):
             'problems__rating',
             filter=Q(problems__status__in=['resolved', 'closed'])
         )
-    ).order_by('-total_problems')
+    ).filter(total_problems__gt=0)
+    .order_by('-total_problems'))  # ← list() здесь
 
     for cat in category_stats:
         if cat.total_problems > 0:
@@ -308,10 +329,16 @@ def statistics(request):
         else:
             cat.resolved_percent = 0
 
+    print("DEBUG category_stats count:", len(category_stats))  # ← добавь
+    print("DEBUG chart_labels:", [cat.name for cat in category_stats])  # ← добавь
+
     context = {
         'staff_stats': staff_stats,
         'category_stats': category_stats,
-        'total_problems_all': Problem.objects.count(),  # для %
+        'total_problems_all': Problem.objects.count(),
+        'chart_labels': [cat.name for cat in category_stats],  # теперь работает
+        'chart_total': [cat.total_problems for cat in category_stats],
+        'chart_resolved': [cat.resolved_problems for cat in category_stats],
     }
 
     return render(request, 'issues/statistics.html', context)
@@ -319,10 +346,19 @@ def statistics(request):
 @staff_member_required
 def assign_staff(request, pk):
     problem = get_object_or_404(Problem, pk=pk)
+
     if request.method == 'POST':
         assigned_to_id = request.POST.get('assigned_to')
         if assigned_to_id:
             assigned_to = User.objects.get(id=assigned_to_id)
+
+            # Проверка — сотрудник подходит по категории?
+            if problem.category and not assigned_to.staff_profile.categories.filter(
+                id=problem.category.id
+            ).exists():
+                messages.error(request, _("Этот сотрудник не обслуживает данную категорию."))
+                return redirect('issues:problem_detail', pk=pk)
+
             problem.assigned_to = assigned_to
             problem.assigned_at = timezone.now()
             problem.save()
@@ -339,6 +375,7 @@ def assign_staff(request, pk):
             problem.assigned_at = None
             problem.save()
             messages.success(request, _("Ответственный снят"))
+
     return redirect('issues:problem_detail', pk=pk)
 
 @login_required
@@ -350,17 +387,42 @@ def take_task(request, pk):
     elif not request.user.is_staff:
         messages.error(request, _("Только сотрудники могут брать заявки в работу."))
     else:
-        problem.assigned_to = request.user
-        problem.assigned_at = timezone.now()
-        problem.save()
-
-        Notification.objects.create(
-            user=request.user,
-            message_key="notification.taken_to_work",
-            message_params={"title": problem.title},
-            problem=problem
+        # Проверка по категории
+        has_profile = hasattr(request.user, 'staff_profile')
+        category_match = (
+            not problem.category or  # если у заявки нет категории — разрешаем
+            (has_profile and request.user.staff_profile.categories.filter(
+                id=problem.category.id
+            ).exists())
         )
 
-        messages.success(request, _("Вы успешно взяли заявку «%(title)s» в работу!") % {"title": problem.title})
+        if not category_match:
+            messages.error(request, _("Вы не можете взять эту заявку — она не входит в ваши категории."))
+        else:
+            problem.assigned_to = request.user
+            problem.assigned_at = timezone.now()
+            problem.save()
+
+            Notification.objects.create(
+                user=request.user,
+                message_key="notification.taken_to_work",
+                message_params={"title": problem.title},
+                problem=problem
+            )
+            messages.success(
+                request,
+                _("Вы успешно взяли заявку «%(title)s» в работу!") % {"title": problem.title}
+            )
 
     return redirect('issues:problem_detail', pk=pk)
+
+@login_required
+def mark_notification_read(request, pk):
+    notification = get_object_or_404(Notification, pk=pk, user=request.user)
+    notification.is_read = True
+    notification.save()
+
+    # Редирект на заявку если есть, иначе на список
+    if notification.problem:
+        return redirect('issues:problem_detail', pk=notification.problem.pk)
+    return redirect('issues:problem_list')

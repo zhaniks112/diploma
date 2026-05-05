@@ -1,13 +1,18 @@
 {% extends 'issues/base.html' %}
 {% load i18n %}
-
 {% block content %}
 <div class="container mt-4">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="card shadow">
         <div class="card-body">
-
             <h2 class="card-title">{{ problem.title }}</h2>
-
             <p class="text-muted">
                 {% trans "Категория" %}: {{ problem.category }} |
                 {% trans "Статус" %}: <strong>{{ problem.status }}</strong> |
@@ -15,11 +20,9 @@
             </p>
 
             <hr>
-
             <p class="card-text">
                 {{ problem.description }}
             </p>
-
             {% if problem.image %}
                 <hr>
                 <img src="{{ problem.image.url }}"
@@ -28,7 +31,6 @@
                      alt="{% trans 'Изображение проблемы' %}">
             {% endif %}
 
-            <!-- Форма изменения статуса -->
             {% if user.is_staff %}
                 <hr>
                 <form method="post" action="{% url 'issues:change_problem_status' problem.id %}">
@@ -46,10 +48,8 @@
                 </form>
             {% endif %}
 
-            <!-- История статусов -->
             <hr>
             <h5>{% trans "История статусов" %}</h5>
-
             <ul class="list-group">
                 {% for history in problem.status_history.all %}
                     <li class="list-group-item">
@@ -70,7 +70,6 @@
                 {% endfor %}
             </ul>
 
-            <!-- Оценка качества решения -->
             <hr>
             <h5>{% trans "Оцените качество решения" %}</h5>
 
@@ -113,7 +112,6 @@
                 <p class="text-muted">{% trans "Оценку может поставить только автор заявки после решения." %}</p>
             {% endif %}
 
-            <!-- Кнопка удаления -->
             {% if user.is_superuser and problem.status == 'closed' %}
                 <hr>
                 <form method="post" action="{% url 'issues:delete_problem' problem.id %}"
@@ -125,13 +123,11 @@
                 </form>
             {% endif %}
 
-            <!-- Кнопка назад -->
             <hr>
             <a href="{% url 'issues:problem_list' %}" class="btn btn-secondary mt-3">
                 ← {% trans "Назад к списку" %}
             </a>
 
-            <!-- Назначить ответственного -->
             {% if user.is_superuser %}
                 <hr>
                 <h5>{% trans "Назначить/изменить ответственного" %}</h5>
@@ -149,19 +145,24 @@
                 </form>
             {% endif %}
 
-            <!-- Кнопка "Взять в работу" -->
             {% if user.is_staff and not problem.assigned_to %}
-                <div class="mt-4">
-                    <form method="post" action="{% url 'issues:take_task' problem.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-warning btn-lg">
-                            {% trans "Взять заявку в работу" %}
-                        </button>
-                    </form>
-                    <small class="text-muted">{% trans "После взятия заявки вы станете ответственным" %}</small>
-                </div>
-            {% endif %}
-
+    <div class="mt-4">
+        {% if category_warning %}
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                {% trans "Эта заявка не входит в ваши категории. Вы не можете взять её в работу." %}
+            </div>
+        {% else %}
+            <form method="post" action="{% url 'issues:take_task' problem.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning btn-lg">
+                    {% trans "Взять заявку в работу" %}
+                </button>
+            </form>
+            <small class="text-muted">{% trans "После взятия заявки вы станете ответственным" %}</small>
+        {% endif %}
+    </div>
+{% endif %}
         </div>
     </div>
 </div>
