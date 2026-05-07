@@ -1,47 +1,117 @@
 {% extends 'issues/base.html' %}
 {% load i18n %}
+
 {% block content %}
-<div class="container mt-5">
-    <h2 class="mb-4">{% trans "Создать заявку" %}</h2>
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Кнопка возврата -->
+            <div class="mb-3">
+                <a href="{% url 'issues:problem_list' %}" class="text-decoration-none text-muted">
+                    <i class="fas fa-arrow-left me-1"></i> {% trans "Назад к списку" %}
+                </a>
+            </div>
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <h2 class="fw-bold mb-4">
+                        <i class="fas fa-edit text-primary me-2"></i>{% trans "Создать заявку" %}
+                    </h2>
 
-        <div class="mb-3">
-            <label for="title" class="form-label">{% trans "Название" %}</label>
-            <input type="text" class="form-control" id="title" name="title" required>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Название -->
+                        <div class="mb-4">
+                            <label for="title" class="form-label fw-bold">{% trans "Название" %}</label>
+                            <input type="text" class="form-control form-control-lg rounded-3"
+                                   id="title" name="title" required
+                                   placeholder="{% trans 'Кратко опишите суть проблемы' %}">
+                        </div>
+
+                        <!-- Описание -->
+                        <div class="mb-4">
+                            <label for="description" class="form-label fw-bold">{% trans "Описание" %}</label>
+                            <textarea class="form-control rounded-3" id="description" name="description"
+                                      required rows="5" placeholder="{% trans 'Подробности проблемы...' %}"></textarea>
+                        </div>
+
+                        <!-- Категория -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                {% trans "Категория проблемы" %} <span class="text-danger">*</span>
+                            </label>
+                            <div class="category-select-wrapper">
+                                {{ form.category }}
+                            </div>
+                            {% if form.category.errors %}
+                                <div class="text-danger small mt-1">{{ form.category.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Изображение -->
+                        <div class="mb-4">
+                            <label for="image" class="form-label fw-bold">{% trans "Изображение (опционально)" %}</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control rounded-3" id="image" name="image" accept="image/*">
+                            </div>
+                            <div class="form-text">{% trans "Прикрепите фото для ускорения решения" %}</div>
+                        </div>
+
+                        <hr class="my-4 opacity-25">
+
+                        <!-- Кнопки -->
+                        <div class="d-flex flex-column flex-md-row gap-3">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm fw-bold">
+                                <i class="fas fa-plus-circle me-2"></i>{% trans "Создать" %}
+                            </button>
+
+                            {% trans "Изменения будут потеряны. Вы уверены?" as confirm_msg %}
+                            <button type="button" class="btn btn-outline-secondary btn-lg rounded-pill px-4"
+                                    onclick="if(confirm('{{ confirm_msg|escapejs }}')) history.back();">
+                                {% trans "Отмена" %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label for="description" class="form-label">{% trans "Описание" %}</label>
-            <textarea class="form-control" id="description" name="description" required rows="5"></textarea>
-        </div>
-
-        <div class="mb-3">
-    <label class="form-label">{% trans "Категория проблемы" %} <span class="text-danger">*</span></label>
-    {{ form.category }}
-    {% if form.category.errors %}
-        <div class="text-danger small">{{ form.category.errors }}</div>
-    {% endif %}
-        </div>
-
-        <div class="mb-3">
-            <label for="image" class="form-label">{% trans "Изображение (опционально)" %}</label>
-            <input type="file" class="form-control" id="image" name="image">
-        </div>
-
-        <!-- Блок с кнопками — теперь они рядом -->
-        <div class="d-flex gap-3 mt-4">
-            <button type="submit" class="btn btn-primary">
-                Создать
-            </button>
-
-            {% trans "Изменения будут потеряны. Вернуться к списку?" as confirm_msg %}
-            <button type="button" class="btn btn-outline-danger"
-                    onclick="if(confirm('{{ confirm_msg|escapejs }}')) history.back();">
-                {% trans "Назад к списку" %}
-            </button>
-        </div>
-    </form>
+    </div>
 </div>
+
+<style>
+    /* Улучшаем внешний вид стандартных полей Django */
+    .category-select-wrapper select {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+    }
+    .category-select-wrapper select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13,110,253,.15);
+        background-color: #fff;
+    }
+    .form-control:focus {
+        background-color: #fff;
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13,110,253,.15);
+    }
+    .btn-primary {
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        border: none;
+    }
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3) !important;
+    }
+</style>
 {% endblock %}

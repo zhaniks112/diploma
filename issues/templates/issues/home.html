@@ -1,69 +1,144 @@
 {% extends 'issues/base.html' %}
 {% load i18n %}
+
 {% block content %}
-<div class="container mt-5 text-center">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <h1 class="display-4 mb-4">{% trans "Добро пожаловать в наш сайт по решению университетских проблем!" %}</h1>
+<style>
+    /* Плавный градиент для верхней части */
+    .hero-bg {
+        background: radial-gradient(circle at top right, rgba(13, 110, 253, 0.05), transparent),
+                    radial-gradient(circle at bottom left, rgba(13, 110, 253, 0.05), transparent);
+        border-radius: 30px;
+        padding: 60px 20px;
+    }
+    /* Стиль карточек-преимуществ */
+    .feature-card {
+        border: none;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        background: #fff;
+    }
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+    }
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        background: rgba(13, 110, 253, 0.1);
+        color: #0d6efd;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 1.5rem;
+    }
+    /* Кнопки с закруглением */
+    .btn-custom {
+        border-radius: 12px;
+        padding: 12px 30px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+</style>
 
-            {% if user.is_authenticated %}
-                <h3 class="mb-4">{% blocktrans with username=user.username %} Привет, {{ username }}!
-                    {% endblocktrans %}
-                </h3>
-            {% else %}
-                <h3 class="mb-4">{% trans "Привет, гость!" %}</h3>
-            {% endif %}
+<div class="container mt-4">
+    <div class="hero-bg text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <!-- Заголовок -->
+                <h1 class="display-4 fw-bold mb-4 text-dark">
+                    {% trans "Добро пожаловать в наш сайт по решению университетских проблем!" %}
+                </h1>
 
-            <p class="lead mb-5">
-                {% trans  "Это удобная система для студентов, преподавателей и сотрудников университета. Здесь вы можете быстро сообщить о любой инфраструктурной проблеме кампуса (неисправный проектор, протекающая крыша, слабый Wi-Fi и многое другое), отслеживать статус решения и участвовать в улучшении нашего университета." %}
-            </p>
+                <!-- Приветствие -->
+                <div class="mb-4">
+                    {% if user.is_authenticated %}
+                        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fs-6">
+                            <i class="fas fa-user-circle me-2"></i>
+                            {% blocktrans with username=user.username %}Привет, {{ username }}!{% endblocktrans %}
+                        </span>
+                    {% else %}
+                        <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill fs-6">
+                            {% trans "Привет, гость!" %}
+                        </span>
+                    {% endif %}
+                </div>
 
-            <div class="row g-4 mb-5">
-                <div class="col-md-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">{% trans "Сообщите о проблеме" %}</h5>
-                            <p class="card-text">{% trans "Создайте заявку за 30 секунд с фото и описанием." %}</p>
+                <!-- Описание -->
+                <p class="lead text-muted mb-5 px-md-5">
+                    {% trans "Это удобная система для студентов, преподавателей и сотрудников университета. Здесь вы можете быстро сообщить о любой инфраструктурной проблеме кампуса, отслеживать статус решения и участвовать в улучшении нашего университета." %}
+                </p>
+
+                <!-- Основные действия -->
+                <div class="d-flex justify-content-center gap-3 mb-5">
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'login' %}" class="btn btn-primary btn-custom shadow-sm">
+                            <i class="fas fa-sign-in-alt me-2"></i>{% trans "Войти" %}
+                        </a>
+                        <a href="{% url 'account_signup' %}" class="btn btn-outline-primary btn-lg">
+                            {% trans "Зарегистрироваться" %}
+                        </a>
+                    {% else %}
+                        <a href="{% url 'issues:problem_create' %}" class="btn btn-primary btn-custom shadow-sm">
+                            <i class="fas fa-plus me-2"></i>{% trans "Создать заявку" %}
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'issues:problem_list' %}" class="btn btn-light btn-custom border shadow-sm">
+                        {% trans "Список заявок" %} <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+
+                <!-- Сетка карточек -->
+                <div class="row g-4 mb-5">
+                    <div class="col-md-4">
+                        <div class="card h-100 shadow-sm feature-card p-3">
+                            <div class="card-body">
+                                <div class="icon-box"><i class="fas fa-bolt"></i></div>
+                                <h5 class="fw-bold">{% trans "Сообщите о проблеме" %}</h5>
+                                <p class="card-text text-muted small">{% trans "Создайте заявку за 30 секунд с фото и описанием." %}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 shadow-sm feature-card p-3">
+                            <div class="card-body">
+                                <div class="icon-box"><i class="fas fa-eye"></i></div>
+                                <h5 class="fw-bold">{% trans "Отслеживайте статус" %}</h5>
+                                <p class="card-text text-muted small">{% trans "Узнавайте, когда проблема будет решена" %}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 shadow-sm feature-card p-3">
+                            <div class="card-body">
+                                <div class="icon-box"><i class="fas fa-heart"></i></div>
+                                <h5 class="fw-bold">{% trans "Участвуйте в решении" %}</h5>
+                                <p class="card-text text-muted small">{% trans "Помогайте университету становиться лучше." %}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">{% trans "Отслеживайте статус" %}</h5>
-                            <p class="card-text">{% trans "Узнавайте, когда проблема будет решена." %}</p>
+
+                <!-- Счетчик статистики -->
+                <div class="pt-4 border-top">
+                    <div class="row justify-content-center">
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <h2 class="fw-bold text-primary mb-0">{{ solved_problems|default:"0" }}</h2>
+                                <span class="text-muted small uppercase fw-bold">{% trans "Проблем решено" %}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <h2 class="fw-bold text-dark mb-0">{{ total_problems|default:"0" }}</h2>
+                                <span class="text-muted small uppercase fw-bold">{% trans "Всего заявок" %}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">{% trans "Участвуйте в решении" %}</h5>
-                            <p class="card-text">{% trans "Помогайте университету становиться лучше." %}</p>
-                        </div>
-                    </div>
-                </div>
+
             </div>
-
-            {% if not user.is_authenticated %}
-                <div class="mb-5">
-                    <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-3">{% trans "Войти" %}</a>
-                    <a href="{% url 'issues:register' %}" class="btn btn-outline-primary btn-lg">{% trans "Зарегистрироваться" %}</a>
-                </div>
-            {% endif %}
-
-            <div class="mb-5">
-                <a href="{% url 'issues:problem_list' %}" class="btn btn-outline-primary btn-lg">
-                    {% trans "Перейти к списку всех заявок →" %}
-                </a>
-            </div>
-
-            <p class="text-muted mt-5">
-                {% blocktrans with solved=solved_problems total=total_problems %}
-                Уже решено проблем: <strong>{{ solved }}</strong><br>
-                Всего заявок: <strong>{{ total }}</strong>
-                {% endblocktrans %}
-            </p>
         </div>
     </div>
 </div>

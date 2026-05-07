@@ -163,7 +163,34 @@
         {% endif %}
     </div>
 {% endif %}
+            {% if user.is_staff and problem.assigned_to == user and problem.status != 'resolved' and problem.status != 'closed' %}
+    <hr>
+    <h6>{% trans "Передать заявку другому сотруднику" %}</h6>
+    <form method="post" action="{% url 'issues:reassign_task' problem.pk %}">
+        {% csrf_token %}
+        <div class="d-flex gap-2 align-items-center">
+            <select name="new_assigned_to" class="form-select w-50">
+                <option value="">{% trans "Выберите сотрудника" %}</option>
+                {% for staff in staff_list %}
+                    {% if staff != user %}  {# не показываем себя #}
+                        <option value="{{ staff.id }}">{{ staff.username }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-outline-warning">
+                {% trans "Передать" %}
+            </button>
         </div>
+    </form>
+    <small class="text-muted">{% trans "Заявка будет передана сотруднику той же категории" %}</small>
+{% endif %}
+            {% if user == problem.author or user.is_staff %}
+    <a href="{% url 'issues:problem_edit' problem.pk %}" class="btn btn-outline-primary rounded-pill">
+        <i class="fas fa-edit me-1"></i> {% trans "Редактировать" %}
+    </a>
+{% endif %}
+        </div>
+
     </div>
 </div>
 {% endblock %}

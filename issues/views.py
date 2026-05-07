@@ -17,6 +17,8 @@ from django.contrib.auth.decorators import login_required
 import json
 from .utils import send_new_problem_email, send_status_change_email
 from django.utils.translation import gettext_lazy as _
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 @login_required
@@ -258,24 +260,7 @@ def home(request):
     return render(request, 'issues/home.html', context)
 
 def register(request):
-    print("Метод запроса:", request.method)           # ← добавь
-    print("POST данные:", request.POST)               # ← добавь
-
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        print("Форма валидна?", form.is_valid())      # ← ключевой print
-        if form.is_valid():
-            user = form.save()
-            print("Создан пользователь:", user.username)
-            login(request, user)
-            messages.success(request, 'Регистрация успешна! Добро пожаловать!')
-            return redirect('issues:problem_list')    # ← используй namespace
-        else:
-            print("Ошибки формы:", form.errors)       # ← покажет, что не так
-    else:
-        form = RegisterForm()
-
-    return render(request, 'issues/register.html', {'form': form})
+    return redirect('account_signup')  # перенаправляет на страницу allauth
 
 @staff_member_required
 def statistics(request):
@@ -426,3 +411,65 @@ def mark_notification_read(request, pk):
     if notification.problem:
         return redirect('issues:problem_detail', pk=notification.problem.pk)
     return redirect('issues:problem_list')
+
+@login_required
+def reassign_task(request, pk):
+    problem = get_object_or_404(Problem, pk=pk)
+
+    if problem.status in ['resolved', 'closed']:
+        messages.error(request, _("Нельзя передать завершённую заявку."))
+        return redirect('issues:problem_detail', pk=pk)
+
+    # Только текущий ответственный может переназначить
+    if problem.assigned_to != request.user:
+        messages.error(request, _("Вы не являетесь ответственным за эту заявку."))
+        return redirect('issues:problem_detail', pk=pk)
+
+    if request.method == 'POST':
+        new_assigned_id = request.POST.get('new_assigned_to')
+        if new_assigned_id:
+            new_assigned = get_object_or_404(User, id=new_assigned_id)
+
+            # Проверка — новый сотрудник той же категории
+            if problem.category and not new_assigned.staff_profile.categories.filter(
+                    id=problem.category.id
+            ).exists():
+                messages.error(request, _("Этот сотрудник не обслуживает данную категорию."))
+                return redirect('issues:problem_detail', pk=pk)
+
+            old_assigned = problem.assigned_to
+            problem.assigned_to = new_assigned
+            problem.assigned_at = timezone.now()
+            problem.save()
+
+            # Уведомление новому сотруднику
+            Notification.objects.create(
+                user=new_assigned,
+                message_key="notification.assigned",
+                message_params={"title": problem.title},
+                problem=problem
+            )
+
+            # Уведомление старому сотруднику
+            Notification.objects.create(
+                user=old_assigned,
+                message_key="notification.reassigned_from",
+                message_params={"title": problem.title, "to": new_assigned.username},
+                problem=problem
+            )
+
+            messages.success(request, _("Заявка передана сотруднику %(username)s.") % {
+                "username": new_assigned.username
+            })
+
+    return redirect('issues:problem_detail', pk=pk)
+
+class ProblemUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Problem
+    fields = ['title', 'description', 'category', 'image'] # Поля, которые можно менять
+    template_name = 'issues/problem_create.html' # Используем тот же красивый шаблон, что и для создания
+
+    def test_func(self):
+        """Проверка: редактировать может только автор или персонал"""
+        problem = self.get_object()
+        return self.request.user == problem.author or self.request.user.is_staff

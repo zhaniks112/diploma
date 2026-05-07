@@ -1,26 +1,76 @@
 {% extends 'issues/base.html' %}
 {% load i18n %}
+
 {% block content %}
+<style>
+    .problem-card {
+        border: none;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        background: #fff;
+    }
+    .problem-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 20px rgba(0,0,0,0.1) !important;
+    }
+    .category-indicator {
+        width: 6px;
+        background-color: #dee2e6;
+        min-width: 6px;
+        flex-shrink: 0;
+    }
+    /* Кастомные цвета для категорий (настройте под свои ID или имена) */
+    .cat-it { background-color: #0d6efd; }
+    .cat-хозяйство { background-color: #198754; }
+    .cat-учеба { background-color: #6f42c1; }
+
+    .status-badge {
+        font-size: 0.75rem;
+        padding: 0.5em 0.8em;
+        border-radius: 8px;
+    }
+    .filter-panel {
+        background: #fff;
+        border-radius: 20px;
+        border: none;
+    }
+    .card-img-container {
+        height: 160px;
+        overflow: hidden;
+    }
+    .card-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+
 <div class="container mt-5">
-    <h2 class="mb-4">{% trans "Все заявки" %}</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">{% trans "Все заявки" %}</h2>
+    </div>
 
     {% if user.is_staff %}
-    <div class="alert alert-info mb-4">
+    <div class="alert alert-subtle alert-info border-0 shadow-sm rounded-4 mb-4">
+        <i class="fas fa-info-circle me-2"></i>
         {% trans "Вы видите только заявки, за которые вы назначены ответственным, а также все завершённые заявки." %}
     </div>
     {% endif %}
 
-    <form method="get" class="mb-4">
-        <div class="row g-3">
+    <div class="card filter-panel shadow-sm p-4 mb-5">
+        <form method="get" class="row g-3 align-items-end">
             <div class="col-md-4">
-                <input type="text" name="q" class="form-control"
+                <label class="small fw-bold mb-2">{% trans "Поиск" %}</label>
+                <input type="text" name="q" class="form-control border-0 bg-light rounded-3"
                        placeholder="{% trans 'Поиск по названию или описанию' %}"
                        value="{{ search_query|default:'' }}">
             </div>
 
-            <div class="col-md-3">
-                <select name="category" class="form-select">
-                    <option value="">{% trans "Все категории" %}</option>
+            <div class="col-md-2">
+                <label class="small fw-bold mb-2">{% trans "Категория" %}</label>
+                <select name="category" class="form-select border-0 bg-light rounded-3">
+                    <option value="">{% trans "Все" %}</option>
                     {% for cat in categories %}
                         <option value="{{ cat.id }}" {% if selected_category == cat.id %}selected{% endif %}>
                             {{ cat.name }}
@@ -30,62 +80,99 @@
             </div>
 
             <div class="col-md-2">
-                <select name="status" class="form-select">
-                    <option value="">{% trans "Все статусы" %}</option>
-                    <option value="new"        {% if selected_status == 'new'        %}selected{% endif %}>{{ problem.get_status_display|default:"New" }}</option>
-                    <option value="in_progress"{% if selected_status == 'in_progress' %}selected{% endif %}>{{ problem.get_status_display|default:"In Progress" }}</option>
-                    <option value="resolved"   {% if selected_status == 'resolved'   %}selected{% endif %}>{{ problem.get_status_display|default:"Resolved" }}</option>
-                    <option value="closed"     {% if selected_status == 'closed'     %}selected{% endif %}>{{ problem.get_status_display|default:"Closed" }}</option>
+                <label class="small fw-bold mb-2">{% trans "Статус" %}</label>
+                <select name="status" class="form-select border-0 bg-light rounded-3">
+                    <option value="">{% trans "Все" %}</option>
+                    <option value="new" {% if selected_status == 'new' %}selected{% endif %}>{% trans "Новые" %}</option>
+                    <option value="in_progress" {% if selected_status == 'in_progress' %}selected{% endif %}>{% trans "В работе" %}</option>
+                    <option value="resolved" {% if selected_status == 'resolved' %}selected{% endif %}>{% trans "Решено" %}</option>
                 </select>
             </div>
 
-            <div class="col-md-3">
-                <select name="sort" class="form-select">
-                    <option value="created_at"  {% if selected_sort == 'created_at'  %}selected{% endif %}>{% trans "Новые сверху" %}</option>
-                    <option value="-created_at" {% if selected_sort == '-created_at' %}selected{% endif %}>{% trans "Старые сверху" %}</option>
-                    <option value="title"       {% if selected_sort == 'title'       %}selected{% endif %}>{% trans "По названию (А-Я)" %}</option>
-                    <option value="-title"      {% if selected_sort == '-title'      %}selected{% endif %}>{% trans "По названию (Я-А)" %}</option>
-                    <option value="rating"      {% if selected_sort == 'rating'      %}selected{% endif %}>{% trans "По оценке (лучшие сверху)" %}</option>
+            <div class="col-md-2">
+                <label class="small fw-bold mb-2">{% trans "Сортировка" %}</label>
+                <select name="sort" class="form-select border-0 bg-light rounded-3">
+                    <option value="created_at" {% if selected_sort == 'created_at' %}selected{% endif %}>{% trans "Сначала новые" %}</option>
+                    <option value="rating" {% if selected_sort == 'rating' %}selected{% endif %}>{% trans "По рейтингу" %}</option>
                 </select>
             </div>
 
-            <div class="col-md-auto">
-                <button type="submit" class="btn btn-primary w-100">{% trans "Применить" %}</button>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-dark w-100 rounded-3 py-2">
+                    {% trans "Применить" %}
+                </button>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 
     {% if problems %}
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
             {% for problem in problems %}
                 <div class="col">
-                    <div class="card h-100 shadow-sm">
+                    <div class="card h-100 shadow-sm problem-card">
                         {% if problem.image %}
-                            <img src="{{ problem.image.url }}" class="card-img-top"
-                                 alt="{{ problem.title }}"
-                                 style="height: 180px; object-fit: cover;">
+                        <div class="card-img-container">
+                            <img src="{{ problem.image.url }}" alt="{{ problem.title }}">
+                        </div>
                         {% endif %}
-                        <div class="card-body">
-                            <h5 class="card-title">{{ problem.title }}</h5>
-                            <p class="card-text text-muted small">
-                                {% trans "Категория" %}: {{ problem.category|default:_("Не указана") }}<br>
-                                {% trans "Статус" %}: <strong>{{ problem.get_status_display }}</strong><br>
-                                {% trans "Автор" %}: {{ problem.author.username }}<br>
-                                {% if problem.rating %}
-                                    {% trans "Оценка" %}: {{ problem.rating }} ★
-                                {% endif %}
-                            </p>
-                            <a href="{% url 'issues:problem_detail' problem.pk %}" class="btn btn-primary btn-sm">
-                                {% trans "Подробнее" %}
-                            </a>
+
+                        <div class="d-flex h-100">
+                            <!-- Индикатор категории -->
+                            <div class="category-indicator
+                                {% if problem.category.name == 'IT и техника' %}bg-primary
+                                {% elif problem.category.name == 'Безопасность' %}bg-danger
+                                {% elif problem.category.name == 'Электрика и освещение' %}bg-warning
+                                {% else %}bg-secondary{% endif %}">
+                            </div>
+
+                            <div class="card-body p-4 d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title fw-bold mb-0" style="font-size: 1.1rem;">{{ problem.title }}</h5>
+                                    <span class="status-badge badge
+                                        {% if problem.status == 'new' %}bg-info text-dark
+                                        {% elif problem.status == 'in_progress' %}bg-warning text-dark
+                                        {% elif problem.status == 'resolved' %}bg-success
+                                        {% else %}bg-secondary{% endif %}">
+                                        {{ problem.get_status_display }}
+                                    </span>
+                                </div>
+
+                                <p class="card-text text-muted small mb-4">
+                                    {{ problem.description|truncatechars:85 }}
+                                </p>
+
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-light rounded-circle p-2 me-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-user text-muted" style="font-size: 0.8rem;"></i>
+                                            </div>
+                                            <span class="small fw-bold">{{ problem.author.username }}</span>
+                                        </div>
+                                        {% if problem.rating %}
+                                            <span class="badge bg-light text-dark border"><i class="fas fa-star text-warning me-1"></i>{{ problem.rating }}</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center border-top pt-3">
+                                        <div class="text-muted small">
+                                            <i class="far fa-calendar-alt me-1"></i> {{ problem.created_at|date:"d.m.Y" }}
+                                        </div>
+                                        <a href="{% url 'issues:problem_detail' problem.pk %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                            {% trans "Открыть" %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <div class="alert alert-info text-center">
-            {% trans "Заявок по выбранным фильтрам не найдено." %}
+        <div class="text-center py-5">
+            <img src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png" alt="Empty" style="width: 120px; opacity: 0.5;">
+            <p class="text-muted mt-3">{% trans "Ничего не найдено" %}</p>
         </div>
     {% endif %}
 </div>

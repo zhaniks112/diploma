@@ -19,6 +19,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'issues',
     'rest_framework',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+]
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 MIDDLEWARE = [
@@ -30,14 +40,21 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
+
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'   # обязательное подтверждение
+ACCOUNT_EMAIL_REQUIRED = True              # email обязателен
+ACCOUNT_AUTHENTICATION_METHOD = 'username' # вход по username
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True        # подтверждение по GET запросу
+LOGIN_REDIRECT_URL = '/problems/'
 
 ROOT_URLCONF = 'university_issues.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,7 +118,7 @@ LOGIN_URL = '/accounts/login/'          # куда перенаправлять 
 LOGIN_REDIRECT_URL = '/'                # куда отправлять после успешного логина (можно '/create/' или другую страницу)
 LOGOUT_REDIRECT_URL = '/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'   # или console для тестов
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # или console для тестов
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -123,3 +140,9 @@ LOCALE_PATHS = [
 APPEND_SLASH = True
 
 USE_L10N = True
+
+LANGUAGE_COOKIE_NAME = 'django_language'
+
+ACCOUNT_EMAIL_SUBJECT_PREFIX = ''  # убирает [example.com] из темы
+
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3  # 3 дня вместо дефолтных нескольких минут

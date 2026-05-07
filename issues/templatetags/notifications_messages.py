@@ -5,4 +5,5 @@ NOTIFICATION_MESSAGES = {
     "notification.assigned":       _("Вам назначена заявка: %(title)s"),
     "notification.status_changed": _("Ваша заявка «%(title)s» изменила статус на «%(status)s»"),
     "notification.taken_to_work":  _("Вы взяли в работу заявку: %(title)s"),
+    "notification.reassigned_from":  _("Заявка «%(title)s» передана сотруднику %(to)s"),
 }

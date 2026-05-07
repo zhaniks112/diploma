@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name=_("Название"))
@@ -128,6 +129,9 @@ class Problem(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.get_status_display()})"
+
+    def get_absolute_url(self):
+        return reverse('issues:problem_detail', kwargs={'pk': self.pk})
 
 
 class StatusHistory(models.Model):

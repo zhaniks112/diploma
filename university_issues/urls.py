@@ -7,10 +7,10 @@ from django.contrib.auth import views as auth_views
 
 # Основные URL без локализации
 urlpatterns = [
-
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path("i18n/", include("django.conf.urls.i18n")),
+    path('accounts/', include('allauth.urls')),
 ]
 
 # Локализованные URL

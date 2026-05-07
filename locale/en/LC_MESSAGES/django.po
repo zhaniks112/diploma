@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 15:26+0500\n"
+"POT-Creation-Date: 2026-05-07 14:09+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,340 +29,352 @@ msgstr "Problem category (required)"
 msgid "Назначить ответственного (опционально)"
 msgstr "Assign responsible person (optional)"
 
-#: .\issues\models.py:8 .\issues\models.py:42
-#: .\issues\templates\issues\problem_create.html:11
+#: .\issues\models.py:7 .\issues\models.py:41
+#: .\issues\templates\issues\problem_create.html:26
 msgid "Название"
 msgstr "Title"
 
-#: .\issues\models.py:10 .\issues\models.py:43
-#: .\issues\templates\issues\problem_create.html:16
+#: .\issues\models.py:9 .\issues\models.py:42
+#: .\issues\templates\issues\problem_create.html:34
 msgid "Описание"
 msgstr "Description"
 
-#: .\issues\models.py:11
+#: .\issues\models.py:10
 msgid "Иконка"
 msgstr "Icon"
 
-#: .\issues\models.py:12
+#: .\issues\models.py:11
 msgid "Порядок"
 msgstr "Order"
 
-#: .\issues\models.py:15 .\issues\models.py:50
-#: .\issues\templates\issues\problem_detail.html:12
-#: .\issues\templates\issues\problem_list.html:79
-#: .\issues\templates\issues\statistics.html:61
+#: .\issues\models.py:14 .\issues\models.py:49
+#: .\issues\templates\issues\problem_detail.html:17
+#: .\issues\templates\issues\problem_list.html:71
+#: .\issues\templates\issues\statistics.html:75
 msgid "Категория"
 msgstr "Category"
 
-#: .\issues\models.py:16
+#: .\issues\models.py:15 .\issues\models.py:190
 msgid "Категории"
 msgstr "Categories"
 
-#: .\issues\models.py:36
+#: .\issues\models.py:35
 msgid "Новый"
 msgstr "New"
 
-#: .\issues\models.py:37
+#: .\issues\models.py:36 .\issues\templates\issues\problem_list.html:87
+#: .\issues\templatetags\custom_tags.py:11
 msgid "В работе"
 msgstr "In Progress"
 
-#: .\issues\models.py:38 .\issues\templates\issues\statistics.html:63
+#: .\issues\models.py:37 .\issues\templates\issues\problem_list.html:88
+#: .\issues\templates\issues\statistics.html:77
+#: .\issues\templates\issues\statistics.html:139
 msgid "Решено"
 msgstr "Resolved"
 
-#: .\issues\models.py:39
+#: .\issues\models.py:38
 msgid "Закрыто"
 msgstr "Closed"
 
-#: .\issues\models.py:58 .\issues\templates\issues\problem_detail.html:13
-#: .\issues\templates\issues\problem_list.html:80
+#: .\issues\models.py:57 .\issues\templates\issues\problem_detail.html:18
+#: .\issues\templates\issues\problem_list.html:83
 msgid "Статус"
 msgstr "Status"
 
-#: .\issues\models.py:65
+#: .\issues\models.py:64
 msgid "Изображение"
 msgstr "Image"
 
-#: .\issues\models.py:72 .\issues\templates\issues\problem_detail.html:14
-#: .\issues\templates\issues\problem_list.html:81
+#: .\issues\models.py:71 .\issues\templates\issues\problem_detail.html:19
 msgid "Автор"
 msgstr "Author"
 
-#: .\issues\models.py:81
+#: .\issues\models.py:80
 msgid "Ответственный сотрудник"
 msgstr "Responsible staff"
 
-#: .\issues\models.py:82
+#: .\issues\models.py:81
 msgid "Сотрудник, назначенный на выполнение заявки"
 msgstr "Staff member assigned to complete the request"
 
-#: .\issues\models.py:85
+#: .\issues\models.py:84
 msgid "Дата назначения"
 msgstr "Assignment date"
 
-#: .\issues\models.py:93
+#: .\issues\models.py:92
 msgid "Решил проблему"
 msgstr "Solved the problem"
 
-#: .\issues\models.py:94
+#: .\issues\models.py:93
 msgid "Сотрудник, который перевёл заявку в resolved/closed"
 msgstr "Staff member who changed the request to resolved/closed"
 
-#: .\issues\models.py:101
+#: .\issues\models.py:100
 msgid "Оценка качества решения"
 msgstr "Solution quality rating"
 
-#: .\issues\models.py:102
+#: .\issues\models.py:101
 msgid "Оцените от 1 до 5, как была решена проблема"
 msgstr "Rate the quality of the solution from 1 to 5"
 
-#: .\issues\models.py:107 .\issues\templates\issues\problem_detail.html:106
+#: .\issues\models.py:106 .\issues\templates\issues\problem_detail.html:105
 msgid "Отзыв"
 msgstr "Review"
 
-#: .\issues\models.py:108
+#: .\issues\models.py:107
 msgid "Ваш комментарий к оценке (необязательно)"
 msgstr "Your comment on the rating (optional)"
 
-#: .\issues\models.py:111
+#: .\issues\models.py:110
 msgid "Дата оценки"
 msgstr "Rating date"
 
-#: .\issues\models.py:118
+#: .\issues\models.py:117
 msgid "Оценил"
 msgstr "Rated by"
 
-#: .\issues\models.py:121 .\issues\models.py:164
+#: .\issues\models.py:120 .\issues\models.py:163
 msgid "Дата создания"
 msgstr "Creation date"
 
-#: .\issues\models.py:122
+#: .\issues\models.py:121
 msgid "Дата обновления"
 msgstr "Update date"
 
-#: .\issues\models.py:123
+#: .\issues\models.py:122
 msgid "Последнее обновление"
 msgstr "Last updated"
 
-#: .\issues\models.py:126
+#: .\issues\models.py:125
 msgid "Заявка"
 msgstr "Issue"
 
-#: .\issues\models.py:127
+#: .\issues\models.py:126
 msgid "Заявки"
 msgstr "Issues"
 
-#: .\issues\models.py:147
+#: .\issues\models.py:146
 msgid "История изменения статуса"
 msgstr "Status change history"
 
-#: .\issues\models.py:148
+#: .\issues\models.py:147
 msgid "Истории изменения статусов"
 msgstr "Status change histories"
 
-#: .\issues\models.py:157
+#: .\issues\models.py:156
 msgid "Сообщение"
 msgstr "Message"
 
-#: .\issues\models.py:160
-#, fuzzy
-#| msgid "Сообщение"
+#: .\issues\models.py:159
 msgid "Ключ сообщения"
 msgstr "Message"
 
-#: .\issues\models.py:161
-#, fuzzy
-#| msgid "Дата назначения"
+#: .\issues\models.py:160
 msgid "Параметры сообщения"
 msgstr "Assignment date"
 
-#: .\issues\models.py:163
+#: .\issues\models.py:162
 msgid "Прочитано"
 msgstr "Read"
 
-#: .\issues\models.py:173
+#: .\issues\models.py:172
 msgid "Уведомление"
 msgstr "Notification"
 
-#: .\issues\models.py:174 .\issues\templates\issues\base.html:28
+#: .\issues\models.py:173 .\issues\templates\issues\base.html:120
 msgid "Уведомления"
 msgstr "Notifications"
 
+#: .\issues\models.py:184 .\issues\templates\issues\statistics.html:27
+msgid "Сотрудник"
+msgstr "Staff member"
 
-#: .\issues\notifications_messages.py:6
-#, python-format
-msgid "Ваша заявка «%(title)s» изменила статус на «%(status)s»"
-msgstr "Your request %(title)s changed status to %(status)s"
+#: .\issues\models.py:194
+msgid "Профиль сотрудника"
+msgstr "Profile of staff"
 
-#: .\issues\notifications_messages.py:7
-msgid "Вы взяли в работу заявку: %(title)s"
-msgstr "A request has been assigned to you: %(title)s"
+#: .\issues\models.py:195
+msgid "Профили сотрудников"
+msgstr "Staff Profiles"
 
-#: .\issues\templates\issues\base.html:13
+#: .\issues\templates\issues\base.html:53
 msgid "Университет"
 msgstr "University"
 
-#: .\issues\templates\issues\base.html:53
-msgid "Нет новых уведомлений"
-msgstr "There are no any notifications"
-
-#: .\issues\templates\issues\base.html:61
-#: .\issues\templates\issues\problem_list.html:6
+#: .\issues\templates\issues\base.html:64
+#: .\issues\templates\issues\problem_list.html:51
 msgid "Все заявки"
 msgstr "All issues"
 
-#: .\issues\templates\issues\base.html:64
-#: .\issues\templates\issues\problem_create.html:5
+#: .\issues\templates\issues\base.html:69
+#: .\issues\templates\issues\home.html:84
+#: .\issues\templates\issues\problem_create.html:18
 #: .\issues\templates\issues\problem_form.html:5
 msgid "Создать заявку"
 msgstr "Create an issue"
 
-#: .\issues\templates\issues\base.html:69
+#: .\issues\templates\issues\base.html:75
 msgid "Статистика"
 msgstr "Statistic"
 
-#: .\issues\templates\issues\base.html:75
-msgid "Язык"
-msgstr "Language"
+#: .\issues\templates\issues\base.html:138
+msgid "Нет новых уведомлений"
+msgstr "There are no any notifications"
 
-#: .\issues\templates\issues\base.html:105
+#: .\issues\templates\issues\base.html:154
 msgid "Пользователь"
 msgstr "User"
 
-#: .\issues\templates\issues\base.html:112
+#: .\issues\templates\issues\base.html:160
 msgid "Выйти"
 msgstr "Exit"
 
-#: .\issues\templates\issues\home.html:7
+#: .\issues\templates\issues\home.html:51
 msgid "Добро пожаловать в наш сайт по решению университетских проблем!"
 msgstr "Welcome to our website of solving university issues!"
 
-#: .\issues\templates\issues\home.html:10
+#: .\issues\templates\issues\home.html:59
 #, python-format
-msgid ""
-" Привет, %(username)s!\n"
-"                    "
+msgid "Привет, %(username)s!"
 msgstr ""
 " Hi, %(username)s!\n"
 "                    "
 
-#: .\issues\templates\issues\home.html:14
+#: .\issues\templates\issues\home.html:63
 msgid "Привет, гость!"
 msgstr "Hi, guest!"
 
-#: .\issues\templates\issues\home.html:18
+#: .\issues\templates\issues\home.html:70
 msgid ""
 "Это удобная система для студентов, преподавателей и сотрудников "
 "университета. Здесь вы можете быстро сообщить о любой инфраструктурной "
-"проблеме кампуса (неисправный проектор, протекающая крыша, слабый Wi-Fi и "
-"многое другое), отслеживать статус решения и участвовать в улучшении нашего "
-"университета."
+"проблеме кампуса, отслеживать статус решения и участвовать в улучшении "
+"нашего университета."
 msgstr ""
 "This is a convenient system for students, faculty, and university staff. "
 "Here, you can quickly report any campus infrastructure issues (such as a "
 "faulty projector, a leaking roof, weak Wi-Fi, and more), track the "
 "resolution status, and contribute to improving our university."
 
-#: .\issues\templates\issues\home.html:25
-msgid "Сообщите о проблеме"
-msgstr "Report for problem"
-
-#: .\issues\templates\issues\home.html:26
-msgid "Создайте заявку за 30 секунд с фото и описанием."
-msgstr "Create a request in 30 seconds with a photo and description."
-
-#: .\issues\templates\issues\home.html:33
-msgid "Отслеживайте статус"
-msgstr "Track the status"
-
-#: .\issues\templates\issues\home.html:34
-msgid "Узнавайте, когда проблема будет решена."
-msgstr "Find out when the problem will be solved."
-
-#: .\issues\templates\issues\home.html:41
-msgid "Участвуйте в решении"
-msgstr "Participate in the solution"
-
-#: .\issues\templates\issues\home.html:42
-msgid "Помогайте университету становиться лучше."
-msgstr "Help the university become better."
-
-#: .\issues\templates\issues\home.html:50
+#: .\issues\templates\issues\home.html:77
 #: .\issues\templates\issues\register.html:71
 #: .\issues\templates\registration\login.html:28
 msgid "Войти"
 msgstr "Sign in"
 
-#: .\issues\templates\issues\home.html:51
+#: .\issues\templates\issues\home.html:80
 #: .\issues\templates\issues\register.html:64
 #: .\issues\templates\registration\login.html:32
 msgid "Зарегистрироваться"
 msgstr "Register"
 
-#: .\issues\templates\issues\home.html:57
-msgid "Перейти к списку всех заявок →"
-msgstr "Go to the list of all requests →"
+#: .\issues\templates\issues\home.html:88
+msgid "Список заявок"
+msgstr "Total requests"
 
-#: .\issues\templates\issues\home.html:62
-#, python-format
-msgid ""
-"\n"
-"                Уже решено проблем: <strong>%(solved)s</strong><br>\n"
-"                Всего заявок: <strong>%(total)s</strong>\n"
-"                "
-msgstr ""
-"\n"
-"                Already solved issues: <strong>%(solved)s</strong><br>\n"
-"                Total requests: <strong>%(total)s</strong>\n"
-"                "
-
-#: .\issues\templates\issues\problem_create.html:21
-msgid "Категория проблемы"
-msgstr "Problem category (required)"
-
-#: .\issues\templates\issues\problem_create.html:29
-msgid "Изображение (опционально)"
+#: .\issues\templates\issues\home.html:98
+msgid "Сообщите о проблеме"
 msgstr "Report for problem"
 
-#: .\issues\templates\issues\problem_create.html:39
-msgid "Изменения будут потеряны. Вернуться к списку?"
-msgstr "Changes will be lost. Return to the list?"
+#: .\issues\templates\issues\home.html:99
+msgid "Создайте заявку за 30 секунд с фото и описанием."
+msgstr "Create a request in 30 seconds with a photo and description."
 
-#: .\issues\templates\issues\problem_create.html:42
-#: .\issues\templates\issues\problem_detail.html:131
+#: .\issues\templates\issues\home.html:107
+msgid "Отслеживайте статус"
+msgstr "Track the status"
+
+#: .\issues\templates\issues\home.html:108
+msgid "Узнавайте, когда проблема будет решена"
+msgstr "Find out when the problem will be solved."
+
+#: .\issues\templates\issues\home.html:116
+msgid "Участвуйте в решении"
+msgstr "Participate in the solution"
+
+#: .\issues\templates\issues\home.html:117
+msgid "Помогайте университету становиться лучше."
+msgstr "Help the university become better."
+
+#: .\issues\templates\issues\home.html:129
+msgid "Проблем решено"
+msgstr "Problem solved"
+
+#: .\issues\templates\issues\home.html:135
+#: .\issues\templates\issues\statistics.html:76
+#: .\issues\templates\issues\statistics.html:131
+msgid "Всего заявок"
+msgstr "Total requests"
+
+#: .\issues\templates\issues\problem_create.html:11
+#: .\issues\templates\issues\problem_detail.html:128
 msgid "Назад к списку"
 msgstr "Back to list"
 
-#: .\issues\templates\issues\problem_detail.html:28
+#: .\issues\templates\issues\problem_create.html:29
+msgid "Кратко опишите суть проблемы"
+msgstr "Briefly describe the essence of the problem"
+
+#: .\issues\templates\issues\problem_create.html:36
+msgid "Подробности проблемы..."
+msgstr "Problem details..."
+
+#: .\issues\templates\issues\problem_create.html:42
+msgid "Категория проблемы"
+msgstr "Problem category (required)"
+
+#: .\issues\templates\issues\problem_create.html:54
+msgid "Изображение (опционально)"
+msgstr "Report for problem"
+
+#: .\issues\templates\issues\problem_create.html:58
+msgid "Прикрепите фото для ускорения решения"
+msgstr "Attach a photo to speed up the resolution"
+
+#: .\issues\templates\issues\problem_create.html:66
+#: .\issues\templates\issues\problem_form.html:9
+msgid "Создать"
+msgstr "Create"
+
+#: .\issues\templates\issues\problem_create.html:69
+msgid "Изменения будут потеряны. Вы уверены?"
+msgstr "Changes will be lost. Are you sure?"
+
+#: .\issues\templates\issues\problem_create.html:72
+msgid "Отмена"
+msgstr "Cancel"
+
+#: .\issues\templates\issues\problem_detail.html:31
 msgid "Изображение проблемы"
 msgstr "Report for problem"
 
-#: .\issues\templates\issues\problem_detail.html:36
+#: .\issues\templates\issues\problem_detail.html:38
 msgid "Изменить статус:"
 msgstr "Track the status"
 
-#: .\issues\templates\issues\problem_detail.html:38
+#: .\issues\templates\issues\problem_detail.html:40
 msgid "new"
 msgstr ""
 
-#: .\issues\templates\issues\problem_detail.html:39
+#: .\issues\templates\issues\problem_detail.html:41
 msgid "in_progress"
 msgstr ""
 
-#: .\issues\templates\issues\problem_detail.html:40
+#: .\issues\templates\issues\problem_detail.html:42
 msgid "resolved"
 msgstr ""
 
-#: .\issues\templates\issues\problem_detail.html:41
+#: .\issues\templates\issues\problem_detail.html:43
 msgid "closed"
 msgstr ""
 
-#: .\issues\templates\issues\problem_detail.html:44
-#: .\issues\templates\issues\problem_detail.html:148
+#: .\issues\templates\issues\problem_detail.html:46
+#: .\issues\templates\issues\problem_detail.html:144
 msgid "Сохранить"
 msgstr "Save"
 
-#: .\issues\templates\issues\problem_detail.html:51
+#: .\issues\templates\issues\problem_detail.html:52
 msgid "История статусов"
 msgstr "Status History"
 
@@ -374,129 +386,140 @@ msgstr "Unknown"
 msgid "История пока отсутствует"
 msgstr "No history yet"
 
-#: .\issues\templates\issues\problem_detail.html:75
+#: .\issues\templates\issues\problem_detail.html:74
 msgid "Оцените качество решения"
 msgstr "Rate the quality of the solution"
 
-#: .\issues\templates\issues\problem_detail.html:82
+#: .\issues\templates\issues\problem_detail.html:81
 msgid "Ваша оценка (1–5)"
 msgstr "Your rating (1–5)"
 
-#: .\issues\templates\issues\problem_detail.html:84
+#: .\issues\templates\issues\problem_detail.html:83
 msgid "Выберите оценку"
 msgstr "Select rating"
 
-#: .\issues\templates\issues\problem_detail.html:94
+#: .\issues\templates\issues\problem_detail.html:93
 msgid "Отзыв (опционально)"
 msgstr "Review (optional)"
 
-#: .\issues\templates\issues\problem_detail.html:95
+#: .\issues\templates\issues\problem_detail.html:94
 msgid "Ваш комментарий..."
 msgstr "Your comment..."
 
-#: .\issues\templates\issues\problem_detail.html:99
+#: .\issues\templates\issues\problem_detail.html:98
 msgid "Отправить оценку"
 msgstr "Submit rating"
 
-#: .\issues\templates\issues\problem_detail.html:104
+#: .\issues\templates\issues\problem_detail.html:103
 msgid "Ваша оценка"
 msgstr "Your rating"
 
-#: .\issues\templates\issues\problem_detail.html:109
+#: .\issues\templates\issues\problem_detail.html:108
 msgid "Оценено"
 msgstr "Rated on"
 
-#: .\issues\templates\issues\problem_detail.html:113
+#: .\issues\templates\issues\problem_detail.html:112
 msgid "Оценку может поставить только автор заявки после решения."
 msgstr ""
 "Only the author of the request can rate it after the issue has been resolved."
 
-#: .\issues\templates\issues\problem_detail.html:120
+#: .\issues\templates\issues\problem_detail.html:118
 msgid "Вы уверены, что хотите удалить проблему?"
 msgstr "Are you sure you want to delete this issue?"
 
-#: .\issues\templates\issues\problem_detail.html:123
+#: .\issues\templates\issues\problem_detail.html:121
 msgid "Удалить проблему"
 msgstr "Delete issue"
 
-#: .\issues\templates\issues\problem_detail.html:137
+#: .\issues\templates\issues\problem_detail.html:133
 msgid "Назначить/изменить ответственного"
 msgstr "Assign / change responsible person"
 
-#: .\issues\templates\issues\problem_detail.html:141
+#: .\issues\templates\issues\problem_detail.html:137
 msgid "Не назначено"
 msgstr "Not assigned"
 
-#: .\issues\templates\issues\problem_detail.html:158
+#: .\issues\templates\issues\problem_detail.html:153
+msgid "Эта заявка не входит в ваши категории. Вы не можете взять её в работу."
+msgstr ""
+"This request does not belong to your categories. You cannot take it to work."
+
+#: .\issues\templates\issues\problem_detail.html:159
 msgid "Взять заявку в работу"
 msgstr "Take the request"
 
-#: .\issues\templates\issues\problem_detail.html:161
+#: .\issues\templates\issues\problem_detail.html:162
 msgid "После взятия заявки вы станете ответственным"
 msgstr "After taking the request, you will become responsible for it"
 
-#: .\issues\templates\issues\problem_form.html:9
-msgid "Создать"
-msgstr "Create"
+#: .\issues\templates\issues\problem_detail.html:168
+msgid "Передать заявку другому сотруднику"
+msgstr "Transfer request to another employee."
 
-#: .\issues\templates\issues\problem_list.html:10
+#: .\issues\templates\issues\problem_detail.html:173
+msgid "Выберите сотрудника"
+msgstr "Choose the staff"
+
+#: .\issues\templates\issues\problem_detail.html:181
+msgid "Передать"
+msgstr "Transfer"
+
+#: .\issues\templates\issues\problem_detail.html:185
+msgid "Заявка будет передана сотруднику той же категории"
+msgstr "The request will be transferred to an employee of the same category"
+
+#: .\issues\templates\issues\problem_detail.html:189
+#| msgid "Зарегистрироваться"
+msgid "Редактировать"
+msgstr "Edit request"
+
+#: .\issues\templates\issues\problem_list.html:57
 msgid ""
 "Вы видите только заявки, за которые вы назначены ответственным, а также все "
 "завершённые заявки."
 msgstr ""
 "You only see requests you are assigned to, as well as all completed requests."
 
-#: .\issues\templates\issues\problem_list.html:20
+#: .\issues\templates\issues\problem_list.html:64
+msgid "Поиск"
+msgstr "Search"
+
+#: .\issues\templates\issues\problem_list.html:66
 msgid "Поиск по названию или описанию"
 msgstr "Search by title or description"
 
-#: .\issues\templates\issues\problem_list.html:27
-msgid "Все категории"
-msgstr "All categories"
+#: .\issues\templates\issues\problem_list.html:73
+#: .\issues\templates\issues\problem_list.html:85
+msgid "Все"
+msgstr "All"
 
-#: .\issues\templates\issues\problem_list.html:39
-msgid "Все статусы"
-msgstr "All statuses"
+#: .\issues\templates\issues\problem_list.html:86
+msgid "Новые"
+msgstr "New"
 
-#: .\issues\templates\issues\problem_list.html:50
-msgid "Новые сверху"
+#: .\issues\templates\issues\problem_list.html:93
+msgid "Сортировка"
+msgstr "Sort"
+
+#: .\issues\templates\issues\problem_list.html:95
+msgid "Сначала новые"
 msgstr "Newest first"
 
-#: .\issues\templates\issues\problem_list.html:51
-msgid "Старые сверху"
-msgstr "Oldest first"
+#: .\issues\templates\issues\problem_list.html:96
+msgid "По рейтингу"
+msgstr "By rating"
 
-#: .\issues\templates\issues\problem_list.html:52
-msgid "По названию (А-Я)"
-msgstr "By title (A-Z)"
-
-#: .\issues\templates\issues\problem_list.html:53
-msgid "По названию (Я-А)"
-msgstr "By title (Z-A)"
-
-#: .\issues\templates\issues\problem_list.html:54
-msgid "По оценке (лучшие сверху)"
-msgstr "By rating (highest first)"
-
-#: .\issues\templates\issues\problem_list.html:60
+#: .\issues\templates\issues\problem_list.html:102
 msgid "Применить"
 msgstr "Apply"
 
-#: .\issues\templates\issues\problem_list.html:79
-msgid "Не указана"
-msgstr ""
+#: .\issues\templates\issues\problem_list.html:162
+msgid "Открыть"
+msgstr "Open"
 
-#: .\issues\templates\issues\problem_list.html:83
-msgid "Оценка"
-msgstr "Rating"
-
-#: .\issues\templates\issues\problem_list.html:87
-msgid "Подробнее"
-msgstr "Details"
-
-#: .\issues\templates\issues\problem_list.html:96
-msgid "Заявок по выбранным фильтрам не найдено."
-msgstr "No requests found for the selected filters."
+#: .\issues\templates\issues\problem_list.html:175
+msgid "Ничего не найдено"
+msgstr "Nothing is found"
 
 #: .\issues\templates\issues\register.html:8
 msgid "Регистрация"
@@ -524,65 +547,61 @@ msgstr "Confirm password"
 msgid "Уже есть аккаунт?"
 msgstr "Already have an account?"
 
-#: .\issues\templates\issues\statistics.html:6
+#: .\issues\templates\issues\statistics.html:5
 msgid "Статистика персонала"
 msgstr "Staff Statistics"
 
-#: .\issues\templates\issues\statistics.html:13
-msgid "Сотрудник"
-msgstr "Staff member"
+#: .\issues\templates\issues\statistics.html:12
+msgid "Заявки по категориям"
+msgstr "Requests by category"
 
-#: .\issues\templates\issues\statistics.html:14
+#: .\issues\templates\issues\statistics.html:28
 msgid "Назначено заявок"
 msgstr "Assigned requests"
 
-#: .\issues\templates\issues\statistics.html:15
+#: .\issues\templates\issues\statistics.html:29
 msgid "Завершено заявок"
 msgstr "Completed requests"
 
-#: .\issues\templates\issues\statistics.html:16
+#: .\issues\templates\issues\statistics.html:30
 msgid "Процент решённых"
 msgstr "Resolution rate"
 
-#: .\issues\templates\issues\statistics.html:17
-#: .\issues\templates\issues\statistics.html:65
+#: .\issues\templates\issues\statistics.html:31
+#: .\issues\templates\issues\statistics.html:79
 msgid "Средняя оценка"
 msgstr "Average rating"
 
-#: .\issues\templates\issues\statistics.html:18
+#: .\issues\templates\issues\statistics.html:32
 msgid "Всего оценок"
 msgstr "Total ratings"
 
-#: .\issues\templates\issues\statistics.html:37
+#: .\issues\templates\issues\statistics.html:51
 msgid "оценок"
 msgstr "ratings"
 
-#: .\issues\templates\issues\statistics.html:39
-#: .\issues\templates\issues\statistics.html:85
+#: .\issues\templates\issues\statistics.html:53
+#: .\issues\templates\issues\statistics.html:99
 msgid "Нет оценок"
 msgstr "No ratings"
 
-#: .\issues\templates\issues\statistics.html:50
+#: .\issues\templates\issues\statistics.html:64
 msgid "Пока нет данных по персоналу."
 msgstr "No staff data yet."
 
-#: .\issues\templates\issues\statistics.html:54
+#: .\issues\templates\issues\statistics.html:69
 msgid "Топ проблемных категорий"
 msgstr "Top problematic categories"
 
-#: .\issues\templates\issues\statistics.html:62
-msgid "Всего заявок"
-msgstr "Total requests"
-
-#: .\issues\templates\issues\statistics.html:64
+#: .\issues\templates\issues\statistics.html:78
 msgid "Доля решённых"
 msgstr "Resolution rate"
 
-#: .\issues\templates\issues\statistics.html:95
+#: .\issues\templates\issues\statistics.html:109
 msgid "Нет данных по категориям."
 msgstr "No data for categories yet."
 
-#: .\issues\templates\issues\statistics.html:101
+#: .\issues\templates\issues\statistics.html:115
 msgid "Назад к заявкам"
 msgstr "Back to requests"
 
@@ -598,29 +617,83 @@ msgstr "Incorrect username or password"
 msgid "Нет аккаунта?"
 msgstr "Don't have an account?"
 
-#: .\issues\views.py:211
+#: .\issues\templatetags\custom_tags.py:10
+msgid "Открыта"
+msgstr "Closed"
+
+#: .\issues\templatetags\custom_tags.py:12
+msgid "Решена"
+msgstr "Resolved"
+
+#: .\issues\templatetags\custom_tags.py:13
+msgid "Закрыта"
+msgstr "Closed"
+
+#: .\issues\templatetags\notifications_messages.py:5
+#, python-format
+msgid "Вам назначена заявка: %(title)s"
+msgstr "A request has been assigned to you: %(title)s"
+
+#: .\issues\templatetags\notifications_messages.py:6
+#, python-format
+msgid "Ваша заявка «%(title)s» изменила статус на «%(status)s»"
+msgstr "Your request %(title)s changed status to %(status)s"
+
+#: .\issues\templatetags\notifications_messages.py:7
+#, python-format
+msgid "Вы взяли в работу заявку: %(title)s"
+msgstr "You have taken the request into work: %(title)s"
+
+#: .\issues\templatetags\notifications_messages.py:8
+#, python-format
+msgid "Заявка «%(title)s» передана сотруднику %(to)s"
+msgstr "Request «%(title)s» has been transferred to %(to)s"
+
+#: .\issues\views.py:233
 msgid "Заявка создана!"
 msgstr "Request created successfully!"
 
-#: .\issues\views.py:336
+#: .\issues\views.py:361 .\issues\views.py:454
+msgid "Этот сотрудник не обслуживает данную категорию."
+msgstr "This employee does not service this category."
+
+#: .\issues\views.py:374
 msgid "Ответственный назначен!"
 msgstr "Responsible person assigned!"
 
-#: .\issues\views.py:341
+#: .\issues\views.py:379
 msgid "Ответственный снят"
 msgstr "Responsible person removed"
 
-#: .\issues\views.py:349
+#: .\issues\views.py:388
 msgid "Заявка уже назначена другому сотруднику."
 msgstr "The request is already assigned to another staff member."
 
-#: .\issues\views.py:351
+#: .\issues\views.py:390
 msgid "Только сотрудники могут брать заявки в работу."
 msgstr "Only staff members can take requests for work."
 
-#: .\issues\views.py:364
+#: .\issues\views.py:402
+msgid "Вы не можете взять эту заявку — она не входит в ваши категории."
+msgstr "You cannot take this request — it does not belong to your categories."
+
+#: .\issues\views.py:416
+#, python-format
 msgid "Вы успешно взяли заявку «%(title)s» в работу!"
 msgstr "You have successfully taken the request «%(title)s» into work!"
+
+#: .\issues\views.py:437
+msgid "Нельзя передать завершённую заявку."
+msgstr "Cannot transfer a completed request."
+
+#: .\issues\views.py:442
+msgid "Вы не являетесь ответственным за эту заявку."
+msgstr "You are not responsible for this request"
+
+#: .\issues\views.py:478
+#, python-format
+msgid "Заявка передана сотруднику %(username)s."
+msgstr "Request has been transferred to %(username)s."
 
 #: .\university_issues\settings.py:115
 msgid "Russian"
@@ -634,10 +707,53 @@ msgstr ""
 msgid "English"
 msgstr ""
 
-msgid "Вам назначена заявка: %(title)s"
-msgstr "A request has been assigned to you: %(title)s"
+#~ msgid "Язык"
+#~ msgstr "Language"
 
+#~ msgid "Перейти к списку всех заявок →"
+#~ msgstr "Go to the list of all requests →"
 
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                Уже решено проблем: <strong>%(solved)s</strong><br>\n"
+#~ "                Всего заявок: <strong>%(total)s</strong>\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "                Already solved issues: <strong>%(solved)s</strong><br>\n"
+#~ "                Total requests: <strong>%(total)s</strong>\n"
+#~ "                "
+
+#~ msgid "Все категории"
+#~ msgstr "All categories"
+
+#~ msgid "Все статусы"
+#~ msgstr "All statuses"
+
+#~ msgid "Новые сверху"
+#~ msgstr "Newest first"
+
+#~ msgid "Старые сверху"
+#~ msgstr "Oldest first"
+
+#~ msgid "По названию (А-Я)"
+#~ msgstr "By title (A-Z)"
+
+#~ msgid "По названию (Я-А)"
+#~ msgstr "By title (Z-A)"
+
+#~ msgid "По оценке (лучшие сверху)"
+#~ msgstr "By rating (highest first)"
+
+#~ msgid "Оценка"
+#~ msgstr "Rating"
+
+#~ msgid "Подробнее"
+#~ msgstr "Details"
+
+#~ msgid "Заявок по выбранным фильтрам не найдено."
+#~ msgstr "No requests found for the selected filters."
 
 #~ msgid "назад"
 #~ msgstr "back"
