@@ -118,7 +118,7 @@ LOGIN_URL = '/accounts/login/'          # куда перенаправлять 
 LOGIN_REDIRECT_URL = '/'                # куда отправлять после успешного логина (можно '/create/' или другую страницу)
 LOGOUT_REDIRECT_URL = '/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # или console для тестов
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # или console для тестов
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

@@ -1,5 +1,6 @@
 {% extends 'issues/base.html' %}
 {% load i18n %}
+
 {% block content %}
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -17,7 +18,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">{% trans "Имя пользователя" %}</label>
-                    {{ form.username }}
+                    {{ form.login }}  {# ← было form.username #}
                 </div>
 
                 <div class="mb-3">
@@ -29,7 +30,9 @@
             </form>
 
             <div class="text-center mt-3">
-                <p>{% trans "Нет аккаунта?" %} <a href="{% url 'issues:register' %}">{% trans "Зарегистрироваться" %}</a></p>
+                <p>{% trans "Нет аккаунта?" %}
+                    <a href="{% url 'account_signup' %}">{% trans "Зарегистрироваться" %}</a>  {# ← обновил url #}
+                </p>
             </div>
         </div>
     </div>
