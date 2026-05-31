@@ -118,13 +118,13 @@ LOGIN_URL = '/accounts/login/'          # куда перенаправлять 
 LOGIN_REDIRECT_URL = '/'                # куда отправлять после успешного логина (можно '/create/' или другую страницу)
 LOGOUT_REDIRECT_URL = '/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # или console для тестов
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # или console для тестов
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'zhansultanken@gmail.com'  # твой Gmail
 EMAIL_HOST_PASSWORD = 'qdma vxvq fwih ebfd'  # не обычный пароль, а App Password!
-DEFAULT_FROM_EMAIL = 'zhansultanken@gmail.com'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 BASE_URL = 'http://127.0.0.1:8000'  # или твой домен
 
